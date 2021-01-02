@@ -1,0 +1,45 @@
+
+#stats .stat.workers .value .farmer::after {
+    content: 'F'
+}
+
+#stats .stat.workers .value .worker:after {
+    content: 'W'
+}
+
+#stats .stat.workers .value .rebel:after {
+    content: 'R'
+}
+
+#stats .stat.workers .value span {
+    padding-left: 0.5em;
+}
+
+/* remove padding from the first on of the line */
+#stats .stat.workers .value span:first-of-type {
+    padding-left: 0;
+}
+
+/* remove most of the padding between same types */
+#stats .stat.workers .value .worker ~ .worker {
+    padding-left: 0.1em;
+}
+#stats .stat.workers .value .farmer ~ .farmer {
+    padding-left: 0.1em;
+}
+#stats .stat.workers .value .rebel ~ .rebel {
+    padding-left: 0.1em;
+}
+
+
+#stats .stat.workers .value .subsistance-farmer {
+    color: green;
+}
+
+#stats .stat.workers .value .surplus-farmer {
+    color: black;
+}
+
+#stats .stat.workers .value .rebel {
+    color: red;
+}
