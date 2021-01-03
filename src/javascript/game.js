@@ -3,7 +3,8 @@
 const game = {};
 document.game = game;
 game.userState = {
-    gold: 0
+    gold: 0,
+    cityName: 'York'
 };
 game.paused = false;
 game.debugSpeed = 1;

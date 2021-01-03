@@ -1,45 +1,186 @@
 
-#stats .stat.workers .value .farmer::after {
+/* Overall Layout */
+h1 {
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 0;
+}
+
+.main {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: tan;
+    padding: 5px;
+    border: solid tan 1px;
+}
+
+.main .container-left {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+    /* flex child properties */
+    flex-grow: 60;
+}
+
+.main .container-right {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+    /* flex child properties */
+    flex-grow: 40;
+
+    margin-left: 5px;
+}
+
+.main .container-left .effects-container {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+}
+.effects-container .resources-module {
+    /* flex child properties */
+    flex-grow: 60;
+}
+
+.effects-container .enchantments-module {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+
+    /* flex child properties */
+    flex-grow: 40;
+
+    margin-left: 5px;
+}
+
+.main .city-title {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/* Population Module */
+.population-module .top-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.population-module .race-module {
+    font-weight: bold;
+}
+
+.population-module .count-module {
+}
+
+.population-module .count-module .label {
+    font-weight: bold;
+}
+
+/** Workers Module **/
+.population-module .workers-module {
+    background-color: lightgray;
+    border: inset tan 1px;
+    padding-left: 2px;
+}
+
+.population-module .workers-module .farmer::after {
     content: 'F'
 }
 
-#stats .stat.workers .value .worker:after {
+.population-module .workers-module .worker:after {
     content: 'W'
 }
 
-#stats .stat.workers .value .rebel:after {
+.population-module .workers-module .rebel:after {
     content: 'R'
 }
 
-#stats .stat.workers .value span {
+.population-module .workers-module span {
     padding-left: 0.5em;
 }
 
 /* remove padding from the first on of the line */
-#stats .stat.workers .value span:first-of-type {
+.population-module .workers-module span:first-of-type {
     padding-left: 0;
 }
 
 /* remove most of the padding between same types */
-#stats .stat.workers .value .worker ~ .worker {
+.population-module .workers-module .computer-controlled ~ .computer-controlled {
     padding-left: 0.1em;
 }
-#stats .stat.workers .value .farmer ~ .farmer {
+.population-module .workers-module .player-controlled ~ .player-controlled {
     padding-left: 0.1em;
 }
-#stats .stat.workers .value .rebel ~ .rebel {
+.population-module .workers-module .not-controlled ~ .not-controlled {
     padding-left: 0.1em;
 }
 
 
-#stats .stat.workers .value .subsistance-farmer {
+.population-module .workers-module .subsistance-farmer {
     color: green;
 }
 
-#stats .stat.workers .value .surplus-farmer {
+.population-module .workers-module .surplus-farmer {
     color: black;
 }
 
-#stats .stat.workers .value .rebel {
+.population-module .workers-module .rebel {
     color: red;
+}
+
+/* Modules */
+.module .label {
+    font-weight: bold;
+}
+
+.module .content {
+    background-color: lightgray;
+    border: inset tan 1px;
+}
+
+/* Resources Module */
+.resources-module .content {
+    padding: 2px;
+}
+
+/* Right Column */
+
+.container-right .map-module {
+    /* flex child properties */
+    flex-grow: 2;
+
+    background-color: lightgray;
+    border: inset tan 1px;
+}
+
+.container-right .units-module {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+    /* flex child properties */
+    flex-grow: 1;
+
+    margin-top: 5px;
+}
+
+.container-right .producing-module {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+    /* flex child properties */
+    flex-grow: 1;
+
+    margin-top: 5px;
+}
+
+.module .label {
+    flex-grow: 0;
+}
+.module .content {
+    flex-grow: 1;
 }

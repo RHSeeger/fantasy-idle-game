@@ -4,14 +4,16 @@
 
 import * as Game from './game.js';
 import * as Buildings from './buildings.js';
+import * as Races from './races.js';
 
-export const RACES = {
-    HUMAN: 'human',
-    HALFLING: 'halfling',
-    LIZARDMAN: 'lizardman'
-};
+//export const RACES = {
+//    HUMAN: 'human',
+//    HALFLING: 'halfling',
+//    LIZARDMAN: 'lizardman'
+//};
 
 const STARTING_VALUES =  {
+    race: Races.RACES.HUMAN,
     count: 20000 // TODO: change to 3000, we just need a bigger number for testing
 };
 
@@ -22,6 +24,9 @@ $(document).ready(function() {
     console.log("population setup complete, with update speed (" + actualUpdateSpeed + ")");
 });
 
+function getPrimaryRace() {
+    return getUserPopulationData().race;
+}
 
 function updatePopulationCount() {
     if (Game.isPaused() === true) {
@@ -41,7 +46,7 @@ function getPopulationGrowthRate() {
     console.log("Food produced == " + foodProduced);
 
     var baseRate = Math.ceil((foodProduced - populationUnits) / 2.0) * 10;
-    if (hasRace(RACES.LIZARDMAN)) {
+    if (hasRace(Races.RACES.LIZARDMAN)) {
         baseRate += 10;
     }
 
@@ -103,20 +108,21 @@ function calculateFoodGenerated() {
     return totalFoodProduced;
 }
 
-function getPopulationCount() {
+function getUserPopulationData() {
     const userData = Game.getUserState();
     if (!(userData.hasOwnProperty('population'))) {
         userData['population'] = STARTING_VALUES;
     }
-    return userData['population'].count;
+    return userData['population'];
+
+}
+
+function getPopulationCount() {
+    return getUserPopulationData().count;
 }
 
 function setPopulationCount(count) {
-    const userData = Game.getUserState();
-    if (!(userData.hasOwnProperty('population'))) {
-        userData['population'] = STARTING_VALUES;
-    }
-    userData['population'].count = count;
+    getUserPopulationData().count = count;
 
     return count;
 }
@@ -186,7 +192,7 @@ function getNumRequiredFood() {
 
 function getFoodPerFarmer() {
     const hasAnimistsGuild = Buildings.hasBuilding(Buildings.BUILDINGS.ANIMISTS_GUILD);
-    const hasHalflings = hasRace(RACES.HALFLING);
+    const hasHalflings = hasRace(Races.RACES.HALFLING);
     const foodPerFarmer = (hasAnimistsGuild || hasHalflings) ? 3 : 2;
 
     return foodPerFarmer;
@@ -198,5 +204,14 @@ function getNumOptionalFarmers() {
 
 // -- EXPORTS --
 
-export { getPopulationCount, setPopulationCount, getPopulationUnits, hasRace, getNumRequiredFarmers, getNumOptionalFarmers };
+export {
+    getPopulationCount,
+    setPopulationCount,
+    getPopulationUnits,
+    hasRace,
+    getNumRequiredFarmers,
+    getNumOptionalFarmers,
+    getPopulationGrowthRate,
+    getPrimaryRace
+    };
 
