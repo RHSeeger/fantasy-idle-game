@@ -3,6 +3,7 @@ import * as Buildings from './buildings.js';
 import * as Population from './population.js';
 import * as Game from './game.js';
 import * as Races from './races.js';
+import * as Resources from './resources.js';
 
 //const $populationElement =  $('.population-module .count-module');
 const $populationCountModule = $('.population-module .count-module');
@@ -17,6 +18,7 @@ const updateDisplay = function () {
     updatePopulationDisplay();
     updateWealthDisplay();
     updateWorkersDisplay();
+    updateGoldDisplay();
 }
 
 function updateCityTitleDisplay() {
@@ -77,6 +79,56 @@ const updateWorkersDisplay = function() {
     }
 
 }
+
+function updateGoldDisplay() {
+    const goldProduced = Resources.calculateGoldProduced();
+    const goldUpkeep = Resources.calculateGoldUpkeep();
+
+    const goldIncome = goldProduced - goldUpkeep;
+
+    console.log("Gold: produced=" + goldProduced + ", upkeep=" + goldUpkeep + ", income=" + goldIncome);
+    // The first grouping is the upkeep
+    const $moduleContent = $('.main .effects-container .resources-module .gold-module');
+    $moduleContent.empty();
+
+    var currUpkeep = goldUpkeep;
+    while (currUpkeep >= 10) {
+        const icon = $("<span />", {
+            'class': 'gold gold-upkeep gold-10'
+        });
+        $moduleContent.append(icon);
+        currUpkeep -= 10;
+    }
+    while (currUpkeep >= 1) {
+        const icon = $("<span />", {
+            'class': 'gold gold-upkeep gold-1'
+        });
+        $moduleContent.append(icon);
+        currUpkeep -= 1;
+    }
+
+    // The second grouping is the income (or deficit)
+    const incomeType = goldIncome >= 0 ? "gold-income" : "gold-deficit";
+    var currIncome = Math.abs(goldIncome);
+    while (currIncome >= 10) {
+        const icon = $("<span />", {
+            'class': 'gold ' + incomeType + ' gold-10'
+        });
+        $moduleContent.append(icon);
+        currIncome -= 10;
+    }
+    while (currIncome >= 1) {
+        const icon = $("<span />", {
+            'class': 'gold ' + incomeType + ' gold-1'
+        });
+        $moduleContent.append(icon);
+        currIncome -= 1;
+    }
+
+    // TODO: put the actual income/deficit as text on the right
+}
+
+
 
 
 

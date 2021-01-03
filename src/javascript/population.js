@@ -5,6 +5,7 @@
 import * as Game from './game.js';
 import * as Buildings from './buildings.js';
 import * as Races from './races.js';
+import * as Resources from './resources.js';
 
 //export const RACES = {
 //    HUMAN: 'human',
@@ -14,6 +15,7 @@ import * as Races from './races.js';
 
 const STARTING_VALUES =  {
     race: Races.RACES.HUMAN,
+    secondaryRaces: [],
     count: 20000 // TODO: change to 3000, we just need a bigger number for testing
 };
 
@@ -24,8 +26,18 @@ $(document).ready(function() {
     console.log("population setup complete, with update speed (" + actualUpdateSpeed + ")");
 });
 
+/**
+ * The player's main race
+ */
 function getPrimaryRace() {
     return getUserPopulationData().race;
+}
+
+/**
+ * Other races that are part of the empire, either through perks or conquests
+ */
+function getSecondaryRaces() {
+    return getUserPopulationData().secondaryRaces;
 }
 
 function updatePopulationCount() {
@@ -131,12 +143,17 @@ function getPopulationUnits() {
     return Math.floor(getPopulationCount() / 1000.0);
 }
 
+function getPopulationRebelUnits() {
+    // TODO: this
+    return 1;
+}
+
 function hasRace(race) {
     return true;
 }
 
 function getNumRequiredFarmers() {
-    const numRequiredFood = getNumRequiredFood();
+    const numRequiredFood = Resources.getNumRequiredFood();
 
     var baseFoodLevel = calculateBaseFoodLevel();
 
@@ -184,11 +201,6 @@ function getNumRequiredFarmers() {
     return farmersNeededIfAllFull + farmersNeededForHalfProduction;
 }
 
-function getNumRequiredFood() {
-    // It's pretty much always one food per unit, unless we have some modifier
-    // In theory, each normal unit uses one food too... but not sure how we're handling units yet
-    return getPopulationUnits();
-}
 
 function getFoodPerFarmer() {
     const hasAnimistsGuild = Buildings.hasBuilding(Buildings.BUILDINGS.ANIMISTS_GUILD);
@@ -212,6 +224,8 @@ export {
     getNumRequiredFarmers,
     getNumOptionalFarmers,
     getPopulationGrowthRate,
-    getPrimaryRace
+    getPrimaryRace,
+    getSecondaryRaces,
+    getPopulationRebelUnits
     };
 

@@ -4,7 +4,8 @@
 export const RACES = {
     HUMAN: 'human',
     HALFLING: 'halfling',
-    LIZARDMAN: 'lizardman'
+    LIZARDMAN: 'lizardman',
+    DWARF: 'dwarf'
 };
 
 export const RACE_DATA = {
@@ -16,6 +17,9 @@ export const RACE_DATA = {
     },
     lizardman: {
         displayName: 'Lizard Man'
+    },
+    dwarf: {
+        displayName: "Dwarf"
     }
 }
 

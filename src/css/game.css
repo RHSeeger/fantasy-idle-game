@@ -184,3 +184,37 @@ h1 {
 .module .content {
     flex-grow: 1;
 }
+
+/* Gold Module */
+.gold-module .gold-10::after {
+    content: 'G'
+}
+.gold-module .gold-1::after {
+    content: 'g'
+}
+
+.gold-module span {
+    padding-left: 0.5em;
+}
+
+/* remove padding from the first on of the line */
+.gold-module span:first-of-type {
+    padding-left: 0;
+}
+
+/* remove most of the padding between same types */
+.gold-module .gold-upkeep ~ .gold-upkeep {
+    padding-left: 0.1em;
+}
+.gold-module .gold-income ~ .gold-income {
+    padding-left: 0.1em;
+}
+.gold-module .gold-deficit ~ .gold-deficit {
+    padding-left: 0.1em;
+}
+.gold-module .gold-deficit {
+    color: red;
+}
+.gold-module .gold-income {
+    color: green;
+}
