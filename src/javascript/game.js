@@ -10,6 +10,7 @@ game.paused = false;
 game.debugSpeed = 1;
 
 import * as UI from './ui.js';
+import * as Resources from './resources.js';
 
 
 $(document).ready(function() {
@@ -52,7 +53,12 @@ function updateAssets(oldUserState, newUserState) {
 //};
 
 function updateGold(oldUserState, newUserState) {
+    // TODO: should all these functions be using the oldUserState?
+    const goldProduced = Resources.calculateGoldProduced();
+    const goldUpkeep = Resources.calculateGoldUpkeep();
+    const goldIncome = goldProduced - goldUpkeep;
 
+    newUserState.gold = oldUserState.gold + goldIncome;
 };
 
 function updatePopulation(oldUserState, newUserState) {

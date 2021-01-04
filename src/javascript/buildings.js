@@ -12,7 +12,9 @@ export const BUILDINGS = {
     MINERS_GUILD: 'miners_guild',
     MARKETPLACE: 'marketplace',
     BANK: 'bank',
-    MERCHANTS_GUILD: 'merchants_guild'
+    MERCHANTS_GUILD: 'merchants_guild',
+    SAWMILL: 'sawmill',
+    MECHANICIANS_GUILD: 'mechancians_guild'
 };
 
 export const BUILDINGS_DATA = {
@@ -46,6 +48,14 @@ export const BUILDINGS_DATA = {
     },
     merchants_guild: {
         displayName: "Merchant's Guild",
+        upkeepGold: 5
+    },
+    sawmill: {
+        displayName: "Sawmill",
+        upkeepGold: 2
+    },
+    mechancians_guild: {
+        displayName: "Mechanician's Guild",
         upkeepGold: 5
     }
 

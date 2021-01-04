@@ -1,4 +1,10 @@
 
+/**
+ * As a general rule of thumb
+ * - a widget is a functional area on the screen, such as the Resources Widget
+ * - a gadget is a simpler grouping of screen elements, such as the Gold Gadget in the Resources Widget
+ */
+
 /* Overall Layout */
 h1 {
     margin-left: auto;
@@ -82,54 +88,54 @@ h1 {
 }
 
 /** Workers Module **/
-.population-module .workers-module {
+.population-module .workers-widget {
     background-color: lightgray;
     border: inset tan 1px;
     padding-left: 2px;
 }
 
-.population-module .workers-module .farmer::after {
+.population-module .workers-widget .farmer::after {
     content: 'F'
 }
 
-.population-module .workers-module .worker:after {
+.population-module .workers-widget .worker:after {
     content: 'W'
 }
 
-.population-module .workers-module .rebel:after {
+.population-module .workers-widget .rebel:after {
     content: 'R'
 }
 
-.population-module .workers-module span {
+.population-module .workers-widget span {
     padding-left: 0.5em;
 }
 
 /* remove padding from the first on of the line */
-.population-module .workers-module span:first-of-type {
+.population-module .workers-widget span:first-of-type {
     padding-left: 0;
 }
 
 /* remove most of the padding between same types */
-.population-module .workers-module .computer-controlled ~ .computer-controlled {
+.population-module .workers-widget .computer-controlled ~ .computer-controlled {
     padding-left: 0.1em;
 }
-.population-module .workers-module .player-controlled ~ .player-controlled {
+.population-module .workers-widget .player-controlled ~ .player-controlled {
     padding-left: 0.1em;
 }
-.population-module .workers-module .not-controlled ~ .not-controlled {
+.population-module .workers-widget .not-controlled ~ .not-controlled {
     padding-left: 0.1em;
 }
 
 
-.population-module .workers-module .subsistance-farmer {
+.population-module .workers-widget .subsistance-farmer {
     color: green;
 }
 
-.population-module .workers-module .surplus-farmer {
+.population-module .workers-widget .surplus-farmer {
     color: black;
 }
 
-.population-module .workers-module .rebel {
+.population-module .workers-widget .rebel {
     color: red;
 }
 
@@ -185,36 +191,105 @@ h1 {
     flex-grow: 1;
 }
 
-/* Gold Module */
-.gold-module .gold-10::after {
-    content: 'G'
+/* Food Widget */
+.food-widget {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
-.gold-module .gold-1::after {
-    content: 'g'
+.food-widget .food-10::after {
+    content: 'F'
+}
+.food-widget .food-1::after {
+    content: 'f'
 }
 
-.gold-module span {
+.food-widget span {
     padding-left: 0.5em;
 }
 
 /* remove padding from the first on of the line */
-.gold-module span:first-of-type {
+.food-widget span:first-of-type {
     padding-left: 0;
 }
 
 /* remove most of the padding between same types */
-.gold-module .gold-upkeep ~ .gold-upkeep {
+.food-widget .food-upkeep ~ .food-upkeep {
     padding-left: 0.1em;
 }
-.gold-module .gold-income ~ .gold-income {
+.food-widget .food-income ~ .food-income {
     padding-left: 0.1em;
 }
-.gold-module .gold-deficit ~ .gold-deficit {
+.food-widget .food-deficit ~ .food-deficit {
     padding-left: 0.1em;
 }
-.gold-module .gold-deficit {
+.food-widget .food-deficit {
     color: red;
 }
-.gold-module .gold-income {
+.food-widget .food-income {
     color: green;
+}
+
+/* Gold Widget */
+.gold-widget {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.gold-widget .gold-10::after {
+    content: 'G'
+}
+.gold-widget .gold-1::after {
+    content: 'g'
+}
+
+.gold-widget span {
+    padding-left: 0.5em;
+}
+
+/* remove padding from the first on of the line */
+.gold-widget span:first-of-type {
+    padding-left: 0;
+}
+
+/* remove most of the padding between same types */
+.gold-widget .gold-upkeep ~ .gold-upkeep {
+    padding-left: 0.1em;
+}
+.gold-widget .gold-income ~ .gold-income {
+    padding-left: 0.1em;
+}
+.gold-widget .gold-deficit ~ .gold-deficit {
+    padding-left: 0.1em;
+}
+.gold-widget .gold-deficit {
+    color: red;
+}
+.gold-widget .gold-income {
+    color: green;
+}
+
+/* Production Widget */
+.production-widget {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.production-widget .production-10::after {
+    content: 'P'
+}
+.production-widget .production-1::after {
+    content: 'p'
+}
+
+.production-widget span {
+    padding-left: 0.1em;
+}
+
+/* remove padding from the first on of the line */
+.production-widget span:first-of-type {
+    padding-left: 0;
 }
