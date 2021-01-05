@@ -7,7 +7,6 @@ import * as Resources from './resources.js';
 import * as PopulationModule from './ui/population-module.js';
 import * as ResourcesModule from './ui/resources-module.js';
 
-
 const updateDisplay = function () {
     updateCityTitleDisplay();
     PopulationModule.update();

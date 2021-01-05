@@ -1,4 +1,6 @@
 
+@import "tabs.css";
+
 /**
  * As a general rule of thumb
  * - a widget is a functional area on the screen, such as the Resources Widget
@@ -12,15 +14,28 @@ h1 {
     padding-bottom: 0;
 }
 
+.application.tab-container {
+    /* flex parent properties */
+    flex-direction: column;
+}
+
+.application.tab-container > .tabs {
+    /* flex parent properties */
+    flex-direction: row;
+}
+
+.application {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .main {
     /* flex parent properties */
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
 
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
     background-color: tan;
     padding: 5px;
     border: solid tan 1px;
@@ -292,4 +307,9 @@ h1 {
 /* remove padding from the first on of the line */
 .production-widget span:first-of-type {
     padding-left: 0;
+}
+
+/** DIALOGS **/
+.construction-dialog {
+    display: none;
 }

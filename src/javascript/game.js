@@ -10,11 +10,13 @@ game.paused = false;
 game.debugSpeed = 1;
 
 import * as UI from './ui.js';
+import * as Tabs from './ui/tabs.js';
 import * as Resources from './resources.js';
 
 
 $(document).ready(function() {
     const UPDATE_INTERVAL = 10000; // 1 second
+    Tabs.initialize();
     update(); // start out with a filled in display
     var updateIntervalId = window.setInterval(update, UPDATE_INTERVAL);
     console.log("Game setup complete");

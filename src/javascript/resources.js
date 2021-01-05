@@ -10,7 +10,8 @@ import { BUILDINGS } from './buildings.js';
 
 export const RESOURCES = {
     GOLD: 'gold',
-    MANA: 'mana'
+    MANA: 'mana',
+    PRODUCTION: 'production'
 }
 
 /********************************************************

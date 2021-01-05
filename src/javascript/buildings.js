@@ -16,49 +16,85 @@ export const BUILDINGS = {
     BANK: 'bank',
     MERCHANTS_GUILD: 'merchants_guild',
     SAWMILL: 'sawmill',
-    MECHANICIANS_GUILD: 'mechanicians_guild'
+    MECHANICIANS_GUILD: 'mechanicians_guild',
+    BUILDERS_HALL: 'builders_hall',
+    BARRACKS: 'barracks'
 };
 
 export const BUILDINGS_DATA = {
-    granary: {
+    [BUILDINGS.BUILDERS_HALL]: {
+        displayName: 'Barracks',
+        cost: { [RESOURCES.PRODUCTION]: 60 },
+        upkeep: { [RESOURCES.GOLD]: 1 },
+        description: ""
+    },
+    [BUILDINGS.BARRACKS]: {
+        displayName: 'Barracks',
+        cost: { [RESOURCES.PRODUCTION]: 30 },
+        upkeep: { },
+        description: "A simple building used to train and house basic units. When combined with other buildings, allows the the training of more advanced units."
+    },
+    [BUILDINGS.GRANARY]: {
         displayName: 'Granary',
-        upkeep: { [RESOURCES.GOLD]: 1 }
+        cost: { [RESOURCES.PRODUCTION]: 40 },
+        upkeep: { [RESOURCES.GOLD]: 1 },
+        description: "An important building for beginning town, adds both population growth and food output.",
+        dependencies: [ BUILDINGS.BUILDERS_HALL ]
+
     },
-    farmers_market: {
+    [BUILDINGS.FARMERS_MARKET]: {
         displayName: "Farmer's Market",
-        upkeep: { [RESOURCES.GOLD]: 2 }
+        cost: { [RESOURCES.PRODUCTION]: 100 },
+        upkeep: { [RESOURCES.GOLD]: 2 },
+        description: ""
     },
-    foresters_guild: {
+    [BUILDINGS.FORESTERS_GUILD]: {
         displayName: "Forester's Guild",
-        upkeep: { [RESOURCES.GOLD]: 2 }
+        cost: { [RESOURCES.PRODUCTION]: 200 },
+        upkeep: { [RESOURCES.GOLD]: 2 },
+        description: ""
     },
-    animists_guild: {
+    [BUILDINGS.ANIMISTS_GUILD]: {
         displayName: "Animist's Guild",
-        upkeep: { [RESOURCES.GOLD]: 5 }
+        cost: { [RESOURCES.PRODUCTION]: 300 },
+        upkeep: { [RESOURCES.GOLD]: 5 },
+        description: ""
     },
-    miners_guild: {
+    [BUILDINGS.MINERS_GUILD]: {
         displayName: "Miner's Guild",
-        upkeep: { [RESOURCES.GOLD]: 3 }
+        cost: { [RESOURCES.PRODUCTION]: 300 },
+        upkeep: { [RESOURCES.GOLD]: 3 },
+        description: ""
     },
-    marketplace: {
+    [BUILDINGS.MARKETPLACE]: {
         displayName: "Marketplace",
-        upkeep: { [RESOURCES.GOLD]: 1 }
+        cost: { [RESOURCES.PRODUCTION]: 100 },
+        upkeep: { [RESOURCES.GOLD]: 1 },
+        description: ""
     },
-    bank: {
+    [BUILDINGS.BANK]: {
         displayName: "Bank",
-        upkeep: { [RESOURCES.GOLD]: 3 }
+        cost: { [RESOURCES.PRODUCTION]: 250 },
+        upkeep: { [RESOURCES.GOLD]: 3 },
+        description: ""
     },
-    merchants_guild: {
+    [BUILDINGS.MERCHANTS_GUILD]: {
         displayName: "Merchant's Guild",
-        upkeep: { [RESOURCES.GOLD]: 5 }
+        cost: { [RESOURCES.PRODUCTION]: 600 },
+        upkeep: { [RESOURCES.GOLD]: 5 },
+        description: ""
     },
-    sawmill: {
+    [BUILDINGS.SAWMILL]: {
         displayName: "Sawmill",
-        upkeep: { [RESOURCES.GOLD]: 2 }
+        cost: { [RESOURCES.PRODUCTION]: 100 },
+        upkeep: { [RESOURCES.GOLD]: 2 },
+        description: ""
     },
-    mechanicians_guild: {
+    [BUILDINGS.MECHANICIANS_GUILD]: {
         displayName: "Mechanician's Guild",
-        upkeep: { [RESOURCES.GOLD]: 5 }
+        cost: { [RESOURCES.PRODUCTION]: 600 },
+        upkeep: { [RESOURCES.GOLD]: 5 },
+        description: ""
     }
 
 };

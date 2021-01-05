@@ -1,0 +1,72 @@
+/*
+ * CSS specific to tabs in general
+ */
+
+/*
+ * -----tab-container------------------
+ * | ------tabs---------------------  |
+ * | |  --tab--  --tab--  --tab--  |  |
+ * | |  |     |  |     |  |     |  |  |
+ * | |  -------  -------  -------  |  |
+ * | -------------------------------  |
+ * | ------tab-contents-------------  |
+ * | |  --tab-content------------  |  |
+ * | |  |                       |  |  |
+ * | |  ------------------------|  |  |
+ * | |  --tab-content------------  |  |
+ * | |  |                       |  |  |
+ * | |  -------------------------  |  |
+ * | |  --tab-content------------  |  |
+ * | |  |                       |  |  |
+ * | |  -------------------------  |  |
+ * | -------------------------------  |
+ * ------------------------------------
+ */
+
+.tab-container {
+    display: flex;
+    flex-wrap: nowrap;
+    /* The orientation of tabs to content (row or column) will depend on the instance */
+}
+
+.tabs {
+    /* flex parent properties */
+    display: flex;
+    flex-wrap: nowrap;
+    /* The orientation of tabs (row or column) will depend on the instance */
+    /* flex child properties */
+    flex-grow: 0;
+}
+
+.tab {
+    /* flex child properties */
+    flex-grow: 1;
+
+    border: outset 3px tan;
+    background-color: tan;
+    margin-bottom: 1px;
+    padding: 2px 0 2px 4px;
+    cursor: hand;
+}
+
+.tab ~ .tab {
+    margin-left: 4px;
+}
+
+.tab.active {
+    border: none;
+    margin-bottom: 0;
+}
+
+.tab-contents {
+    /* flex child properties */
+    flex-grow: 1;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}

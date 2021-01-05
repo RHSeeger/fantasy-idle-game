@@ -12,79 +12,150 @@
 <body>
 <h1>Fantasy Conquer Idle</h1>
 
-<div class="main">
-    <div class="container container-left">
-        <div class="city-title"></div>
+<div class="application tab-container">
+    <div class="tabs tabs-application">
+        <div class="tab tab-main active" data-content="tab-content-main">Main</div>
+        <div class="tab tab-construction" data-content="tab-content-construction">Construction</div>
+        <div class="tab tab-magic" data-content="tab-content-magic">Magic</div>
+        <div class="tab tab-help" data-content="tab-content-help">Help</div>
+    </div>
+    <div class="tab-contents">
+        <div class="tab-content tab-content-main active">
+            <div class="main">
+                <div class="container container-left">
+                    <div class="city-title"></div>
 
-        <div class="module population-module">
-            <div class="container top-container">
-                <span class="module race-module"></span>
-                <span class="module count-module">
-                    <span class="label">Population:</span>
-                    <span class="value"></span>
-                </span>
-            </div>
-            <div class="module workers-widget">
+                    <div class="module population-module">
+                        <div class="container top-container">
+                            <span class="module race-module"></span>
+                    <span class="module count-module">
+                        <span class="label">Population:</span>
+                        <span class="value"></span>
+                    </span>
+                        </div>
+                        <div class="module workers-widget">
 
-            </div>
-        </div>
+                        </div>
+                    </div>
 
-        <div class="container effects-container">
-            <div class="module resources-module">
-                <div class="label">Resources</div>
-                <div class="content">
-                    <div class="module food-widget">
-                        <span class="graphic-value">Food...</span>
-                        <span class="text-value"></span>
+                    <div class="container effects-container">
+                        <div class="module resources-module">
+                            <div class="label">Resources</div>
+                            <div class="content">
+                                <div class="module food-widget">
+                                    <span class="graphic-value">Food...</span>
+                                    <span class="text-value"></span>
+                                </div>
+                                <div class="module production-widget">
+                                    <span class="graphic-value">Production...</span>
+                                    <span class="text-value"></span>
+                                </div>
+                                <div class="module gold-widget">
+                                    <span class="graphic-value">Gold...</span>
+                                    <span class="text-value"></span>
+                                </div>
+                                <div class="module mana-module">
+                                    Mana...
+                                </div>
+                                <div class="module magic-school-books-module">
+                                    Magic School Books?...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="module enchantments-module">
+                            <div class="label">Enchantments</div>
+                            <div class="content">
+                            </div>
+                        </div>
                     </div>
-                    <div class="module production-widget">
-                        <span class="graphic-value">Production...</span>
-                        <span class="text-value"></span>
+                    <div class="module buildings-module">
+                        <div class="label">Buildings</div>
+                        <div class="content">
+                        </div>
+
                     </div>
-                    <div class="module gold-widget">
-                        <span class="graphic-value">Gold...</span>
-                        <span class="text-value"></span>
+                </div>
+
+                <div class="container container-right">
+                    <div class="module map-module"></div>
+
+                    <div class="module units-module">
+                        <div class="label">Units</div>
+                        <div class="content">
+                        </div>
+
                     </div>
-                    <div class="module mana-module">
-                        Mana...
+
+                    <div class="module producing-module">
+                        <div class="label">Producing</div>
+                        <div class="content">
+                        </div>
+                        <div class="actions">
+                            <div class="button">Buy</div>
+                            <div class="button">Change</div>
+                            <div class="button">Ok</div> <!-- I honestly don't remember what OK is for here -->
+                        </div>
+
                     </div>
-                    <div class="module magic-school-books-module">
-                        Magic School Books?...
+                </div>
+            </div><!-- main -->
+        </div><!-- tab-content-main -->
+        <div class="tab-content tab-content-construction">
+            <div class="construction">
+                <div class="items">
+                    <div class="tabs">
+                        <div class="tab tab-buildings">Buidlings</div>
+                        <div class="tab tab-units">Units</div>
+                    </div>
+                    <div class="tab-contents">
+                        <div class="tab-content tab-content-buildings"></div>
+                        <div class="tab-content tab-content-units"></div>
+                    </div>
+                </div>
+                <div class="description">
+                    <div class="top-container">
+                        <div class="image"></div>
+                        <div class="summary">
+                            <div class="name"></div>
+                            <div class="cost">
+                                <span class="label">Cost</span>
+                                <span class="value"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="details">
+                        <div class="widget widget-maintenance">
+                            <div class="label">Maintenance</div>
+                            <div class="value"></div>
+                        </div>
+                        <div class="widget widget-allows">
+                            <div class="label">Allows</div>
+                            <div class="value"></div>
+                        </div>
+                    </div>
+                    <div class="description"></div>
+                    <div class="actions">
+                        <div class="button">Cancel</div>
+                        <div class="button">Ok</div>
+                    </div>
+                </div>
+                <div class="queue">
+                    <div class="label">Queue</div>
+                    <div class="value">
+                        <ol></ol>
                     </div>
                 </div>
             </div>
-            <div class="module enchantments-module">
-                <div class="label">Enchantments</div>
-                <div class="content">
-                </div>
-            </div>
         </div>
-        <div class="module buildings-module">
-            <div class="label">Buildings</div>
-            <div class="content">
-            </div>
-
+        <div class="tab-content tab-content-magic">
+            Magic
         </div>
-    </div>
-
-    <div class="container container-right">
-        <div class="module map-module"></div>
-
-        <div class="module units-module">
-            <div class="label">Units</div>
-            <div class="content">
-            </div>
-
+        <div class="tab-content tab-content-help">
+            Help
         </div>
-
-        <div class="module producing-module">
-            <div class="label">Producing</div>
-            <div class="content">
-            </div>
-
-        </div>
-    </div>
+</div><!-- tab-contents -->
 </div>
 
+<!-- Dialogs and other things that aren't considered to be "in" the main container -->
 </body>
 </html>
