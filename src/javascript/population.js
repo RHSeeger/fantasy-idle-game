@@ -6,15 +6,12 @@ import * as Game from './game.js';
 import * as Buildings from './buildings.js';
 import * as Races from './races.js';
 import * as Resources from './resources.js';
-
-//export const RACES = {
-//    HUMAN: 'human',
-//    HALFLING: 'halfling',
-//    LIZARDMAN: 'lizardman'
-//};
+// Constants
+import { RACES } from './races.js';
+import { BUILDINGS } from './buildings.js';
 
 const STARTING_VALUES =  {
-    race: Races.RACES.HUMAN,
+    race: RACES.HUMAN,
     secondaryRaces: [],
     count: 20000 // TODO: change to 3000, we just need a bigger number for testing
 };
@@ -58,7 +55,7 @@ function getPopulationGrowthRate() {
     console.log("Food produced == " + foodProduced);
 
     var baseRate = Math.ceil((foodProduced - populationUnits) / 2.0) * 10;
-    if (hasRace(Races.RACES.LIZARDMAN)) {
+    if (hasRace(RACES.LIZARDMAN)) {
         baseRate += 10;
     }
 
@@ -103,14 +100,14 @@ function getNumRequiredFarmers() {
 
     const foodPerFarmer = getFoodPerFarmer();
 
-    var producedFood = Buildings.hasBuilding(Buildings.BUILDINGS.FORESTERS_GUILD) ? 2 : 0;
+    var producedFood = Buildings.hasBuilding(BUILDINGS.FORESTERS_GUILD) ? 2 : 0;
     if (producedFood > baseFoodLevel) {
         // If producedFood exceeds base food level, all excess if halved
         producedFood -= ((producedFood - baseFoodLevel) * 0.5);
     }
 
-    producedFood += Buildings.hasBuilding(Buildings.BUILDINGS.GRANARY) ? 2 : 0;
-    producedFood += Buildings.hasBuilding(Buildings.BUILDINGS.FARMERS_MARKET) ? 3 : 0;
+    producedFood += Buildings.hasBuilding(BUILDINGS.GRANARY) ? 2 : 0;
+    producedFood += Buildings.hasBuilding(BUILDINGS.FARMERS_MARKET) ? 3 : 0;
     producedFood *= 1; // 2 for each Wild game in the city's catchment area
 
     const totalGeneratedFood = baseFoodLevel + producedFood;
@@ -147,8 +144,8 @@ function getNumRequiredFarmers() {
 
 
 function getFoodPerFarmer() {
-    const hasAnimistsGuild = Buildings.hasBuilding(Buildings.BUILDINGS.ANIMISTS_GUILD);
-    const hasHalflings = hasRace(Races.RACES.HALFLING);
+    const hasAnimistsGuild = Buildings.hasBuilding(BUILDINGS.ANIMISTS_GUILD);
+    const hasHalflings = hasRace(RACES.HALFLING);
     const foodPerFarmer = (hasAnimistsGuild || hasHalflings) ? 3 : 2;
 
     return foodPerFarmer;

@@ -3,6 +3,8 @@
  */
 
 import * as Game from './game.js';
+import * as Resources from './resources.js';
+import { RESOURCES } from './resources.js';
 
 export const BUILDINGS = {
     GRANARY: 'granary',
@@ -14,49 +16,49 @@ export const BUILDINGS = {
     BANK: 'bank',
     MERCHANTS_GUILD: 'merchants_guild',
     SAWMILL: 'sawmill',
-    MECHANICIANS_GUILD: 'mechancians_guild'
+    MECHANICIANS_GUILD: 'mechanicians_guild'
 };
 
 export const BUILDINGS_DATA = {
     granary: {
         displayName: 'Granary',
-        upkeepGold: 1
+        upkeep: { [RESOURCES.GOLD]: 1 }
     },
     farmers_market: {
         displayName: "Farmer's Market",
-        upkeepGold: 2
+        upkeep: { [RESOURCES.GOLD]: 2 }
     },
     foresters_guild: {
         displayName: "Forester's Guild",
-        upkeepGold: 2
+        upkeep: { [RESOURCES.GOLD]: 2 }
     },
     animists_guild: {
         displayName: "Animist's Guild",
-        upkeepGold: 5
+        upkeep: { [RESOURCES.GOLD]: 5 }
     },
     miners_guild: {
         displayName: "Miner's Guild",
-        upkeepGold: 3
+        upkeep: { [RESOURCES.GOLD]: 3 }
     },
     marketplace: {
         displayName: "Marketplace",
-        upkeepGold: 1
+        upkeep: { [RESOURCES.GOLD]: 1 }
     },
     bank: {
         displayName: "Bank",
-        upkeepGold: 3
+        upkeep: { [RESOURCES.GOLD]: 3 }
     },
     merchants_guild: {
         displayName: "Merchant's Guild",
-        upkeepGold: 5
+        upkeep: { [RESOURCES.GOLD]: 5 }
     },
     sawmill: {
         displayName: "Sawmill",
-        upkeepGold: 2
+        upkeep: { [RESOURCES.GOLD]: 2 }
     },
-    mechancians_guild: {
+    mechanicians_guild: {
         displayName: "Mechanician's Guild",
-        upkeepGold: 5
+        upkeep: { [RESOURCES.GOLD]: 5 }
     }
 
 };
@@ -70,9 +72,24 @@ function getAllBuildings() {
         .map(building => BUILDINGS[building]);
 }
 
+function getUpkeep(building) {
+    return BUILDINGS_DATA[building].upkeep;
+}
+
+function getUpkeepGold(building) {
+    const upkeep = getUpkeep(building);
+    return upkeep.hasOwnProperty(Resources.RESOURCES.GOLD) ? upkeep[Resources.RESOURCES.GOLD] : 0;
+}
+
+function getUpkeepMana(building) {
+    const upkeep = getUpkeep(building);
+    return upkeep.hasOwnProperty(Resources.RESOURCES.MANA) ? upkeep[Resources.RESOURCES.MANA] : 0;
+}
+
 // -- EXPORTS --
 
 export {
     hasBuilding,
-    getAllBuildings
+    getAllBuildings,
+    getUpkeep, getUpkeepGold
     };

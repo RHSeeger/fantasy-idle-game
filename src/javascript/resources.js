@@ -4,6 +4,14 @@ import * as Miscellaneous from './miscellaneous.js';
 import * as Races from './races.js';
 import * as Terrain from './terrain.js';
 import * as Buildings from './buildings.js';
+// Constants
+import { RACES } from './races.js';
+import { BUILDINGS } from './buildings.js';
+
+export const RESOURCES = {
+    GOLD: 'gold',
+    MANA: 'mana'
+}
 
 /********************************************************
  * FOOD
@@ -34,15 +42,15 @@ function calculateFoodGenerated() {
 
     // The amount of farmed and weighted produced food if every farmer is working at max production
     const maxFarmedFood = totalFarmers * foodPerFarmer;
-    const maxWeightedFood = maxFarmedFood + (Buildings.hasBuilding(Buildings.BUILDINGS.FORESTERS_GUILD) ? 2 : 0);
+    const maxWeightedFood = maxFarmedFood + (Buildings.hasBuilding(BUILDINGS.FORESTERS_GUILD) ? 2 : 0);
 
     // The amount of weighted food generated after reducing by half the amount over the base food level
     const weightedFood = (maxWeightedFood <= baseFoodLevel) ? baseFoodLevel
         : maxWeightedFood - ((maxWeightedFood - baseFoodLevel) / 2.0);
 
     // Now we move on to the unweighted food generation types
-    const granaryFood = Buildings.hasBuilding(Buildings.BUILDINGS.GRANARY) ? 2 : 0;
-    const marketFood = Buildings.hasBuilding(Buildings.BUILDINGS.FARMERS_MARKET) ? 3 : 0;
+    const granaryFood = Buildings.hasBuilding(BUILDINGS.GRANARY) ? 2 : 0;
+    const marketFood = Buildings.hasBuilding(BUILDINGS.FARMERS_MARKET) ? 3 : 0;
     const wildGameModifier = 1; //TODO:  2 for each Wild game in the city's catchment area
     const unweightedFood = (granaryFood + marketFood) * wildGameModifier;
 
@@ -89,17 +97,17 @@ function calculateGoldProduced() {
 
 function calculateBaseGold() {
     // From taxes
-    const taxRaceMultiplier = Population.getPrimaryRace() == Races.RACES.dwarf ? 2
-        : Population.getSecondaryRaces().includes(Races.RACES.DWARF) ? 1.25
+    const taxRaceMultiplier = Population.getPrimaryRace() == RACES.dwarf ? 2
+        : Population.getSecondaryRaces().includes(RACES.DWARF) ? 1.25
         : 1;
     const numTaxablePopulationUnits = Population.getPopulationUnits() - Population.getPopulationRebelUnits();
     const taxGold = numTaxablePopulationUnits * Miscellaneous.getTaxRate() * taxRaceMultiplier;
 
     // From minerals
-    const mineralsRaceModifier = Population.getPrimaryRace() == Races.RACES.DWARF ? 2
-        : Population.getSecondaryRaces().includes(Races.RACES.DWARF) ? 1.25
+    const mineralsRaceModifier = Population.getPrimaryRace() == RACES.DWARF ? 2
+        : Population.getSecondaryRaces().includes(RACES.DWARF) ? 1.25
         : 1;
-    const mineralsBuildingModified = Buildings.hasBuilding(Buildings.BUILDINGS.MINERS_GUILD) ? 1.5 : 1;
+    const mineralsBuildingModified = Buildings.hasBuilding(BUILDINGS.MINERS_GUILD) ? 1.5 : 1;
     const mineralValue = [
         Terrain.TERRAIN_SPECIALS.SILVER_ORE,
         Terrain.TERRAIN_SPECIALS.GOLD_ORE,
@@ -123,9 +131,9 @@ function calculateGoldBonus() {
     const tradeBonus = 50;
 
     const buildingBonus = 0
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.MARKETPLACE) ? 50 : 0)
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.BANK) ? 50 : 0)
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.MERCHANTS_GUILD) ? 100 : 0);
+        + (Buildings.hasBuilding(BUILDINGS.MARKETPLACE) ? 50 : 0)
+        + (Buildings.hasBuilding(BUILDINGS.BANK) ? 50 : 0)
+        + (Buildings.hasBuilding(BUILDINGS.MERCHANTS_GUILD) ? 100 : 0);
 
     return (tradeBonus + buildingBonus) / 100.0;
 }
@@ -147,7 +155,7 @@ function calculateGoldUpkeep() {
 
     const buildingUpkeep = Buildings.getAllBuildings()
         .filter(building => Buildings.hasBuilding(building))
-        .map(building => Buildings.BUILDINGS_DATA[building].upkeepGold)
+        .map(building => Buildings.getUpkeepGold(building))
         .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     return buildingUpkeep;
@@ -168,10 +176,10 @@ function calculateProductionBase() {
     const numWorkers = Population.getPopulationUnits() - (numFarmers + numRioters);
 
     const primaryRace = Population.getPrimaryRace();
-    const primaryRaceWorkerGenerated = (primaryRace === Races.RACES.KLACKON || primaryRace === Races.RACES.DWARF) ? 3 : 2;
+    const primaryRaceWorkerGenerated = (primaryRace === RACES.KLACKON || primaryRace === RACES.DWARF) ? 3 : 2;
     const secondaryRaces = Population.getSecondaryRaces()
-    const secondaryRacesWorkerGenerated = (secondaryRaces.includes(Races.RACES.DWARF) ? 0.5 : 0)
-        + (secondaryRaces.includes(Races.RACES.DWARF) ? 0.5 : 0)
+    const secondaryRacesWorkerGenerated = (secondaryRaces.includes(RACES.DWARF) ? 0.5 : 0)
+        + (secondaryRaces.includes(RACES.DWARF) ? 0.5 : 0)
     const baseProduction = (numFarmers * 0.5)+ (numWorkers * (primaryRaceWorkerGenerated + secondaryRacesWorkerGenerated))
     return baseProduction;
 }
@@ -186,10 +194,10 @@ function calculateProductionBonusMultiplier() {
     // Gaia's Blessing doubles the benefit from forests
 
     const buildingModified = 0
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.SAWMILL) ? 25 : 0)
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.FORESTERS_GUILD) ? 25 : 0)
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.MINERS_GUILD) ? 50 : 0)
-        + (Buildings.hasBuilding(Buildings.BUILDINGS.MECHANICIANS_GUILD) ? 50 : 0);
+        + (Buildings.hasBuilding(BUILDINGS.SAWMILL) ? 25 : 0)
+        + (Buildings.hasBuilding(BUILDINGS.FORESTERS_GUILD) ? 25 : 0)
+        + (Buildings.hasBuilding(BUILDINGS.MINERS_GUILD) ? 50 : 0)
+        + (Buildings.hasBuilding(BUILDINGS.MECHANICIANS_GUILD) ? 50 : 0);
 
     const enchantmentModifiedAdditive = 0; // TODO: this
     // Inspirations = +100%

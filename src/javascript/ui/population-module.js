@@ -1,6 +1,8 @@
 
 import * as Population from '../population.js';
 import * as Races from '../races.js';
+// Constants
+import { RACES, RACE_DATA } from '../races.js';
 
 function update() {
     updateRaceDisplay();
@@ -10,7 +12,7 @@ function update() {
 
 function updateRaceDisplay() {
     const race = Population.getPrimaryRace();
-    const raceDisplayName = Races.RACE_DATA[race].displayName;
+    const raceDisplayName = RACE_DATA[race].displayName;
 
     const $primaryRaceModule = $('.population-module .race-module');
     $primaryRaceModule.text(raceDisplayName);
