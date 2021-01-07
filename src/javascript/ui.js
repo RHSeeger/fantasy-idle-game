@@ -6,11 +6,13 @@ import * as Races from './races.js';
 import * as Resources from './resources.js';
 import * as PopulationModule from './ui/population-module.js';
 import * as ResourcesModule from './ui/resources-module.js';
+import * as ConstructionModule from './ui/construction-module.js';
 
 const updateDisplay = function () {
     updateCityTitleDisplay();
     PopulationModule.update();
     ResourcesModule.update();
+    ConstructionModule.update();
 }
 
 function updateCityTitleDisplay() {

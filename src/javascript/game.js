@@ -11,22 +11,27 @@ game.debugSpeed = 1;
 
 import * as UI from './ui.js';
 import * as Tabs from './ui/tabs.js';
+import * as ConstructionModule from './ui/construction-module.js';
 import * as Resources from './resources.js';
+import * as Population from './population.js';
+import * as Construction from './construction.js';
 
+const UPDATE_INTERVAL_TURN = 10000; // one turn every 10 seconds
+const UPDATE_INTERVAL_UI = 1000; // update the ui every 1 second
 
 $(document).ready(function() {
-    const UPDATE_INTERVAL = 10000; // 1 second
     Tabs.initialize();
-    update(); // start out with a filled in display
-    var updateIntervalId = window.setInterval(update, UPDATE_INTERVAL);
+    ConstructionModule.initialize();
+
+    updateUi(); // start out with a filled in display
+    // TODO: Make these take into account changes to the update speed dynamically
+    var updateIntervalIdTurn = window.setInterval(updateGameTurn, UPDATE_INTERVAL_TURN);
+    var updateIntervalIdUi = window.setInterval(updateUi, UPDATE_INTERVAL_UI);
+
     console.log("Game setup complete");
 });
 
-function cloneUserState(userState) {
-    return JSON.parse(JSON.stringify(userState));
-};
-
-function update() {
+function updateGameTurn() {
     if (game.pause === true) {
         return;
     }
@@ -34,20 +39,22 @@ function update() {
     const oldUserState = getGame().userState;
     const newUserState = cloneUserState(oldUserState);
 
-    updateResources(oldUserState, newUserState);
-    updateAssets(oldUserState, newUserState);
+    // update resources
+    updateGold(oldUserState, newUserState);
+
+    // update assets
+    Population.update(oldUserState, newUserState);
+    Construction.update(oldUserState, newUserState);
 
     getGame().userState = newUserState;
+};
+
+function updateUi() {
     UI.updateDisplay();
-};
+}
 
-function updateResources(oldUserState, newUserState) {
-    //updateFood(oldUserState, newUserState);
-    updateGold(oldUserState, newUserState);
-};
-
-function updateAssets(oldUserState, newUserState) {
-    updatePopulation(oldUserState, newUserState);
+function cloneUserState(userState) {
+    return JSON.parse(JSON.stringify(userState));
 };
 
 //const updateFood = function(oldUserState, newUserState) {
@@ -61,10 +68,6 @@ function updateGold(oldUserState, newUserState) {
     const goldIncome = goldProduced - goldUpkeep;
 
     newUserState.gold = oldUserState.gold + goldIncome;
-};
-
-function updatePopulation(oldUserState, newUserState) {
-
 };
 
 function updateFood(oldUserState, newUserState) {

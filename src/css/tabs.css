@@ -56,11 +56,15 @@
 .tab.active {
     border: none;
     margin-bottom: 0;
+    background-color: #A8937D; /* grayish brown */
 }
 
 .tab-contents {
     /* flex child properties */
     flex-grow: 1;
+
+    padding: 4px;
+    background-color: #A8937D; /* grayish brown */
 }
 
 .tab-content {

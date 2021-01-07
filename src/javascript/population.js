@@ -6,6 +6,7 @@ import * as Game from './game.js';
 import * as Buildings from './buildings.js';
 import * as Races from './races.js';
 import * as Resources from './resources.js';
+
 // Constants
 import { RACES } from './races.js';
 import { BUILDINGS } from './buildings.js';
@@ -16,12 +17,24 @@ const STARTING_VALUES =  {
     count: 20000 // TODO: change to 3000, we just need a bigger number for testing
 };
 
-$(document).ready(function() {
-    const UPDATE_INTERVAL = 10000; // every 10 seconds
-    const actualUpdateSpeed = Math.ceil(UPDATE_INTERVAL / Game.getDebugSpeed());
-    var updateIntervalId = window.setInterval(updatePopulationCount, actualUpdateSpeed);
-    console.log("population setup complete, with update speed (" + actualUpdateSpeed + ")");
-});
+//$(document).ready(function() {
+//    const UPDATE_INTERVAL = 10000; // every 10 seconds
+//    const actualUpdateSpeed = Math.ceil(UPDATE_INTERVAL / Game.getDebugSpeed());
+//    var updateIntervalId = window.setInterval(updatePopulationCount, actualUpdateSpeed);
+//    console.log("population setup complete, with update speed (" + actualUpdateSpeed + ")");
+//});
+
+/**
+ * Main accessor for user population data. Sets it on user data object if it's not there already
+ * @returns {*}
+ */
+function getUserPopulationData() {
+    const userData = Game.getUserState();
+    if (!(userData.hasOwnProperty('population'))) {
+        userData['population'] = STARTING_VALUES;
+    }
+    return userData['population'];
+}
 
 /**
  * The player's main race
@@ -37,11 +50,11 @@ function getSecondaryRaces() {
     return getUserPopulationData().secondaryRaces;
 }
 
-function updatePopulationCount() {
-    if (Game.isPaused() === true) {
-        return;
-    }
-
+/**
+ * Updates the population info for one game turn
+ * TODO: Use passed in game state
+ */
+function update(oldUserState, newUserState) {
     const currentCount =  getPopulationCount();
     const growthRate = getPopulationGrowthRate();
     const newCount = Math.max(0, currentCount + growthRate);
@@ -51,8 +64,7 @@ function updatePopulationCount() {
 
 function getPopulationGrowthRate() {
     const populationUnits = getPopulationUnits();
-    const foodProduced =Resources.calculateFoodGenerated();
-    console.log("Food produced == " + foodProduced);
+    const foodProduced = Resources.calculateFoodGenerated();
 
     var baseRate = Math.ceil((foodProduced - populationUnits) / 2.0) * 10;
     if (hasRace(RACES.LIZARDMAN)) {
@@ -60,14 +72,6 @@ function getPopulationGrowthRate() {
     }
 
     return baseRate;
-}
-
-function getUserPopulationData() {
-    const userData = Game.getUserState();
-    if (!(userData.hasOwnProperty('population'))) {
-        userData['population'] = STARTING_VALUES;
-    }
-    return userData['population'];
 }
 
 function getPopulationCount() {
@@ -162,6 +166,7 @@ function calculateNumRioters() {
 // -- EXPORTS --
 
 export {
+    update,
     getPopulationCount,
     setPopulationCount,
     getPopulationUnits,

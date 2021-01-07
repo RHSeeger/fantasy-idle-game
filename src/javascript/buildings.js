@@ -108,18 +108,22 @@ function getAllBuildings() {
         .map(building => BUILDINGS[building]);
 }
 
-function getUpkeep(building) {
-    return BUILDINGS_DATA[building].upkeep;
+function getDisplayName(building) {
+    return BUILDINGS_DATA[building].displayName;
 }
 
-function getUpkeepGold(building) {
-    const upkeep = getUpkeep(building);
-    return upkeep.hasOwnProperty(Resources.RESOURCES.GOLD) ? upkeep[Resources.RESOURCES.GOLD] : 0;
+function getCost(building, resource) {
+    const cost = BUILDINGS_DATA[building].cost;
+    return cost.hasOwnProperty(resource) ? cost[resource] : 0;
 }
 
-function getUpkeepMana(building) {
-    const upkeep = getUpkeep(building);
-    return upkeep.hasOwnProperty(Resources.RESOURCES.MANA) ? upkeep[Resources.RESOURCES.MANA] : 0;
+function getUpkeep(building, resource) {
+    const upkeep = BUILDINGS_DATA[building].upkeep;
+    return upkeep.hasOwnProperty(resource) ? upkeep[resource] : 0;
+}
+
+function getDescription(building) {
+    return BUILDINGS_DATA[building].description;
 }
 
 // -- EXPORTS --
@@ -127,5 +131,8 @@ function getUpkeepMana(building) {
 export {
     hasBuilding,
     getAllBuildings,
-    getUpkeep, getUpkeepGold
+    getDisplayName,
+    getCost,
+    getUpkeep,
+    getDescription
     };

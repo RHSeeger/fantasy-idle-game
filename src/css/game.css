@@ -8,6 +8,15 @@
  */
 
 /* Overall Layout */
+
+:root {
+    /* --raised-border-colors:  #d2b48c; */
+    /* --raised-border-colors:  #8d785c #e8d9c5 #e8d9c5 #8d785c ; /* top right bottom left */
+    --raised-border-colors:  #c2a49c #e2c49c #e2c49c #c2a49c ; /* top right bottom left */
+    /* --raised-border-colors: tan; */
+    --raised-border: outset 4px;
+}
+
 h1 {
     margin-left: auto;
     margin-right: auto;
@@ -312,4 +321,181 @@ h1 {
 /** DIALOGS **/
 .construction-dialog {
     display: none;
+}
+
+/** CONSTRUCTION TAB **/
+.application .construction {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+
+    padding: 5px;
+}
+
+.application .construction .container-top {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+
+    /* flex child properties */
+    flex-grow: 1;
+}
+
+.application .construction .queue {
+    /* flex child properties */
+    flex-grow: 0;
+
+    background-color: tan;
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .buildings {
+    /* flex child properties */
+    flex-grow: 0;
+
+    min-width: 10em;
+}
+
+.application .construction .container-top .asset {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+
+    /* flex child properties */
+    flex-grow: 1;
+}
+
+.application .construction .container-top .units {
+    /* flex child properties */
+    flex-grow: 0;
+
+    min-width: 10em;
+}
+
+.application .construction .container-top .asset .container-top {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+
+    /* flex child properties */
+    flex-grow: 0;
+
+    height: 10em;
+}
+
+.application .construction .container-top .asset .details {
+    /* flex child properties */
+    flex-grow: 0;
+
+    min-height: 10em;
+    background-color: tan;
+
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .asset .description {
+    /* flex child properties */
+    flex-grow: 1;
+
+    min-height: 20em;
+    background-color: tan;
+
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .asset .actions {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    /* flex child properties */
+    flex-grow: 0;
+}
+
+.application .construction .container-top .asset .container-top .image {
+    /* flex child properties */
+    flex-grow: 0;
+
+    min-width: 100px;
+    min-height: 100px;
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .asset .container-top .summary {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+
+    /* flex child properties */
+    flex-grow: 1;
+
+    background-color: tan;
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .asset .actions .button {
+    /* flex child properties */
+    flex-grow: 0;
+
+    padding: 2px 1em 2px 1em;
+    background-color: tan;
+
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+
+.application .construction .container-top .asset .container-top .summary .name {
+    /* flex child properties */
+    flex-grow: 1;
+
+    padding-left: 0.5em;
+    padding-top: 0.5em;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.application .construction .container-top .asset .container-top .summary .cost {
+    /* flex child properties */
+    flex-grow: 0;
+}
+
+.application .construction .container-top .asset .container-top .summary .cost .label {
+    font-weight: bold;
+}
+
+.application .construction .container-top .asset .details .widget-maintenance .label {
+    font-weight: bold;
+}
+
+.application .construction .container-top .asset .details .widget-allows .label {
+    font-weight: bold;
+}
+
+.application .construction .container-top .construction-option {
+    background-color: tan;
+    padding: 3px;
+    cursor: hand;
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+}
+.application .construction .container-top .construction-option ~ .construction-option {
+    margin-top: 5px;
+}
+
+.application .construction .container-top .buildings .construction-option {
+    margin-right: 3px;
+}
+
+.application .construction .container-top .units .construction-option {
+    margin-left: 3px;
+}
+
+.application .construction .container-top .buildings .construction-option.active {
+    font-weight: bold;
 }

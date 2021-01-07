@@ -14,6 +14,17 @@ export const RESOURCES = {
     PRODUCTION: 'production'
 }
 
+export const RESOURCES_DATA = {
+    [RESOURCES.GOLD]: {
+        displayName: "Gold"
+    },
+    [RESOURCES.MANA]: {
+        displayName: "Mana"
+    },
+    [RESOURCES.PRODUCTION]: {
+        displayName: "Production"
+    }
+}
 /********************************************************
  * FOOD
  * Food is a perishable resource - any food not used during a turn is converted to gold
@@ -156,7 +167,7 @@ function calculateGoldUpkeep() {
 
     const buildingUpkeep = Buildings.getAllBuildings()
         .filter(building => Buildings.hasBuilding(building))
-        .map(building => Buildings.getUpkeepGold(building))
+        .map(building => Buildings.getUpkeep(building, RESOURCES.GOLD))
         .reduce((accumulator, currentValue) => accumulator + currentValue);
 
     return buildingUpkeep;
@@ -211,11 +222,16 @@ function calculateProductionBonusMultiplier() {
     return modifier;
 }
 
+function getDisplayName(resource) {
+    return RESOURCES_DATA[resource].displayName;
+}
+
 /**
  * EXPORT
  */
 export {
     getNumRequiredFood, calculateFoodGenerated, calculateBaseFoodLevel,
     calculateGoldProduced, calculateGoldUpkeep,
-    calculateProductionGenerated
+    calculateProductionGenerated,
+    getDisplayName
     };
