@@ -2,17 +2,16 @@
  * The gold widget in the resources module
  */
 
-import * as Resources from '../resources.js';
-import * as Game from '../game.js';
+import * as ProductionUtils from '../utils/production-utils.js';
 
-function update() {
+function update(userState) {
     const $widget = $('.main .effects-container .resources-module .gold-widget');
     const $widgetGraphic = $widget.find('.graphic-value');
     const $widgetText = $widget.find('.text-value');
 
-    const goldCurrent = Game.getUserState().gold;
-    const goldProduced = Resources.calculateGoldProduced();
-    const goldUpkeep = Resources.calculateGoldUpkeep();
+    const goldCurrent = userState.resources.gold;
+    const goldProduced = ProductionUtils.calculateGoldProduced(userState);
+    const goldUpkeep = ProductionUtils.calculateGoldUpkeep(userState);
     const goldIncome = goldProduced - goldUpkeep;
 
     // Update the text display: current gold (change)

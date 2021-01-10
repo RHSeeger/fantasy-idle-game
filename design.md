@@ -79,3 +79,9 @@ excess is sold off. There's no actual "amount" of food we currently have.
 
 4. Calculate minimum requirements for updated assets (ex. mandatory farmers for food for population)
 
+
+
+## Useful Pages
+
+https://clubhouse.io/developer-how-to/writing-object-oriented-javascript-es6-modules-with-text-rpgs/
+

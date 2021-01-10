@@ -1,17 +1,16 @@
 
 /*
- * The gold widget in the resources module
+ * The production widget in the resources module
  */
 
-import * as Resources from '../resources.js';
-import * as Game from '../game.js';
+import * as ProductionUtils from '../utils/production-utils.js';
 
-function update() {
+function update(userState) {
     const $widget = $('.main .effects-container .resources-module .production-widget');
     const $widgetGraphic = $widget.find('.graphic-value');
     const $widgetText = $widget.find('.text-value');
 
-    const production = Resources.calculateProductionGenerated();
+    const production = ProductionUtils.calculateProductionGenerated(userState);
 
     // Update the text display: current gold (change)
     $widgetText.text(production.toLocaleString());

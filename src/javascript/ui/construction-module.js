@@ -2,105 +2,173 @@
  * Code for the construction tab/module
  */
 
-import * as Buildings from '../buildings.js';
-import * as Construction from '../construction.js';
-import * as Units from "../units.js";
-import * as Resources from "../resources.js";
+//import * as Construction from '../construction.js';
+//import * as Buildings from '../buildings.js';
+//import * as Units from "../units.js";
+//import * as SpecialProjects from '../special-projects.js';
+//import * as Resources from "../resources.js";
+//
+//import { BUILDINGS } from '../buildings.js';
+//import { SPECIAL_PROJECTS } from '../special-projects.js';
+//import { RESOURCES } from '../resources.js';
 
-import { BUILDINGS } from '../buildings.js';
-import { SPECIAL_PROJECTS } from '../construction.js';
-import { RESOURCES } from '../resources.js';
+import Buildings from '../definitions/Buildings.js';
+import SpecialProjects from '../definitions/SpecialProjects.js';
+import Units from '../definitions/Units.js';
+import Resources from '../definitions/Resources.js';
 
 function initialize() {
-    initializeProjectsList();
-    initializeUnitsList();
-
+    initializeOptions();
     initializeActions();
 }
 
-function update() {
+jQuery.fn.extend({
+    getPath: function() {
+        var pathes = [];
+
+        this.each(function(index, element) {
+            var path, $node = jQuery(element);
+
+            while ($node.length) {
+                var realNode = $node.get(0), name = realNode.localName;
+                if (!name) { break; }
+
+                name = name.toLowerCase();
+                var parent = $node.parent();
+                var sameTagSiblings = parent.children(name);
+
+                if (sameTagSiblings.length > 1)
+                {
+                    var allSiblings = parent.children();
+                    var index = allSiblings.index(realNode) + 1;
+                    if (index > 0) {
+                        name += ':nth-child(' + index + ')';
+                    }
+                }
+
+                path = name + (path ? ' > ' + path : '');
+                $node = parent;
+            }
+
+            pathes.push(path);
+        });
+
+        return pathes.join(',');
+    }
+});
+
+/**
+ * Update the module
+ * - Update the various project "buttons" to show/hide them based on availability
+ * - Update the queue to show the projects currently in it
+ */
+function update(userState) {
+    const $constructionContent = $(".application .tab-contents .tab-content-construction")
+    const $projectsList = $constructionContent.find(".construction-option");
+
+    $projectsList.each((index, option) => {
+        const $option = $(option);
+        const value = $option.data("value");
+
+        if (userState.construction.isCompleted(value)) {
+            // It's already completed
+            $option.css("display", "none");
+        } else if (value.dependencies.some(dep => !userState.construction.isCompleted(dep))) {
+            // We don't have it's dependencies
+            $option.css("display", "none");
+        } else {
+            $option.css("display", "block");
+        }
+    });
 }
 
 /**
- * Updates the list of available projects (buildings, units, and special)
+ * Initializes the list of available projects (buildings, units, and special)
  */
-function initializeProjectsList() {
+function initializeOptions() {
     const $constructionContent = $(".application .tab-contents .tab-content-construction")
-    const $projectsList = $constructionContent.find(".buildings");
 
+    // The left side projects, which includes special projects and buildings
+    const $projectsList = $constructionContent.find(".buildings");
     $projectsList.empty();
 
-    //console.log("Special Projects:", Construction.getAllSpecialProjects());
-    //Construction.getAllSpecialProjects().forEach(elem => { console.log(elem); } );
-
-    Construction.getAllSpecialProjects().forEach(project => {
-        //console.log("Adding special project", project, Construction.getSpecialProjectDisplayName(project));
-        var project = $("<div/>", {
+    SpecialProjects.getValues().forEach(project => {
+        var projectDiv = $("<div/>", {
             'class': 'construction-option construction-option-building',
             'data-type': 'special-project',
-            'data-value': project,
-            'text': Construction.getDisplayName(project)
+            'text': project.displayName
         });
-        $projectsList.append(project);
+        projectDiv.data("value", project);
+        $projectsList.append(projectDiv);
     });
 
-    Buildings.getAllBuildings().forEach(project => {
-        //console.log("Adding building", project, Buildings.getBuildingDisplayName(project));
-        var project = $("<div/>", {
+    Buildings.getValues().forEach(project => {
+        var projectDiv = $("<div/>", {
             'class': 'construction-option construction-option-building',
             'data-type': 'building',
-            'data-value': project,
-            'text': Buildings.getDisplayName(project)
+            'text': project.displayName
         });
-        $projectsList.append(project);
+        projectDiv.data("value", project);
+        $projectsList.append(projectDiv);
     });
-}
 
-function initializeUnitsList() {
+    // The right side projects, which includes units
+    const $unitsList = $constructionContent.find(".units");
+    $unitsList.empty();
 
+    Units.getValues().forEach(project => {
+        var projectDiv = $("<div/>", {
+            'class': 'construction-option construction-option-unit',
+            'data-type': 'unit',
+            'text': project.displayName
+        });
+        projectDiv.data("value", project);
+        $unitsList.append(projectDiv);
+    });
 }
 
 function initializeActions() {
     $(".application .tab-contents .tab-content-construction .construction-option").each(function(index, option) {
         const $option = $(option);
-        const type = $option.attr('data-type');
-        const value = $option.attr('data-value')
+        const typeName = $option.attr('data-type');
+        //const value = $option.attr('data-value')
+        const value = $option.data("value");
 
         $option.click(function() {
             $(".application .tab-contents .tab-content-construction .construction-option").removeClass("active");
             $(this).addClass("active");
-            displaySelected(type, value);
+            setSelectedProject(typeName, value);
         });
     })
 }
 
-function displaySelected(type, value) {
-    console.log("Displaying selected", type, value);
 
-    const dataSource = type === 'building' ? Buildings
-        : type === "special-project" ? Construction
-        : type === "unit" ? Units
-        : null;
+/**
+ * Sets the currently selected project.
+ * Note that this is just the project that displays in the construction module, the one that will be added to the
+ * queue if that button is pressed. This has no effect on the queue / what the user is currently building
+ * @type One of the modules Buildings, SpecialProjects, Units
+ */
+function setSelectedProject(typeName, value) {
 
     const $main = $(".application .tab-contents .tab-content-construction .asset");
 
     // Name
-    const displayName = dataSource.getDisplayName(value);
-    console.log("Display Name", displayName);
-    $main.find(".summary .name").text(displayName);
+    console.log("Display Name", value.displayName);
+    $main.find(".summary .name").text(value.displayName);
 
     // Cost
-    var cost = [RESOURCES.GOLD, RESOURCES.MANA, RESOURCES.PRODUCTION]
-        .map(resource => [resource, dataSource.getCost(value, resource)])
-        .filter(resourceData => resourceData[1] > 0)
-        .map(resourceData => resourceData[1] + " " + Resources.getDisplayName(resourceData[0]));
+    var cost = Resources.getValues()
+        .map(resource => [resource, value.getCost(resource)])
+        .filter(resourceData => resourceData[1] != null && resourceData[1] > 0)
+        .map(resourceData => resourceData[1] + " " + resourceData[0].displayName);
     $main.find(".summary .cost .value").text(cost.length === 0 ? "<special>" : cost.join(" and "));
 
     // Maintenance
-    var upkeep = [RESOURCES.GOLD, RESOURCES.MANA, RESOURCES.PRODUCTION]
-        .map(resource => [resource, dataSource.getUpkeep(value, resource)])
-        .filter(resourceData => resourceData[1] > 0)
-        .map(resourceData => resourceData[1] + " " + Resources.getDisplayName(resourceData[0]));
+    var upkeep = Resources.getValues()
+        .map(resource => [resource, value.getUpkeep(resource)])
+        .filter(resourceData => resourceData[1] != null && resourceData[1] > 0)
+        .map(resourceData => resourceData[1] + " " + resourceData[0].displayName);
     $main.find(".widget-maintenance .value").text(upkeep.length === 0 ? "<special>" : upkeep.join(" and "));
 
     // Allows
@@ -109,10 +177,9 @@ function displaySelected(type, value) {
     //$main.find(".widget-allows .value").text(allows.join(" and "));
 
     // Description
-    const description = dataSource.getDescription(value);
+    const description = typeof value.description !== 'undefined' ? value.description : nul;
     $main.find(".description").text(description === null ? "" : description);
 }
-
 
 /** EXPORTS **/
 

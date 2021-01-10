@@ -1,13 +1,13 @@
-import * as Resources from '../resources.js';
-import * as Game from '../game.js';
 
-function update() {
+import * as ProductionUtils from '../utils/production-utils.js';
+
+function update(userState) {
     const $widget = $('.main .effects-container .resources-module .food-widget');
     const $widgetGraphic = $widget.find('.graphic-value');
     const $widgetText = $widget.find('.text-value');
 
-    const foodProduced = Resources.calculateFoodGenerated();
-    const foodUpkeep = Resources.getNumRequiredFood();
+    const foodProduced = ProductionUtils.calculateFoodGenerated(userState);
+    const foodUpkeep = ProductionUtils.calculateNumRequiredFood(userState);
     const foodIncome = foodProduced - foodUpkeep;
 
     // Update the text display: current gold (change)

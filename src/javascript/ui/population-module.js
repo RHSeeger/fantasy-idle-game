@@ -1,26 +1,25 @@
 
-import * as Population from '../population.js';
-import * as Races from '../races.js';
-// Constants
-import { RACES, RACE_DATA } from '../races.js';
+//import * as Population from '../population.js';
+//import * as Races from '../races.js';
+//// Constants
+//import { RACES, RACE_DATA } from '../races.js';
 
-function update() {
-    updateRaceDisplay();
-    updatePopulationDisplay();
-    updateWorkersDisplay();
+import * as Population from '../state/population.js';
+
+function update(userState) {
+    updateRaceDisplay(userState);
+    updatePopulationDisplay(userState);
+    updateWorkersDisplay(userState);
 }
 
-function updateRaceDisplay() {
-    const race = Population.getPrimaryRace();
-    const raceDisplayName = RACE_DATA[race].displayName;
-
+function updateRaceDisplay(userState) {
     const $primaryRaceModule = $('.population-module .race-module');
-    $primaryRaceModule.text(raceDisplayName);
+    $primaryRaceModule.text(userState.primaryRace.displayName);
 }
 
-const updatePopulationDisplay = function() {
-    const count = Math.floor(Population.getPopulationCount()).toLocaleString();
-    const growthRate = Population.getPopulationGrowthRate();
+const updatePopulationDisplay = function(userState) {
+    const count = Math.floor(userState.population.count).toLocaleString();
+    const growthRate = Population.calculatePopulationGrowthRate(userState);
 
     const $populationCountModule = $('.population-module .count-module');
     $populationCountModule.find('span.value').text(count + " ("
@@ -28,11 +27,12 @@ const updatePopulationDisplay = function() {
         + growthRate + ")");
 }
 
-const updateWorkersDisplay = function() {
-    const numRequiredFarmers = Population.getNumRequiredFarmers();
-    const numOptionalFarmers = Population.getNumOptionalFarmers();
+const updateWorkersDisplay = function(userState) {
+    const numRequiredFarmers = Population.calculateNumRequiredFarmers(userState);
+    const numOptionalFarmers = userState.population.numOptionalFarmers;
     const numRioters = Population.calculateNumRioters();
-    const numWorkers = Population.getPopulationUnits() - (numRequiredFarmers + numOptionalFarmers + numRioters);
+    const numUnits = Population.calculatePopulationUnits(userState);
+    const numWorkers = numUnits - (numRequiredFarmers + numOptionalFarmers + numRioters);
 
     const $workersElement =  $('.population-module .workers-widget');
     $workersElement.empty();
@@ -63,6 +63,5 @@ const updateWorkersDisplay = function() {
     }
 
 }
-
 
 export { update };
