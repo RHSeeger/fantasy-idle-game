@@ -49,7 +49,7 @@ class PlayerResources {
 
 class PlayerPopulation {
     constructor() {
-        this.count = 20000; // TODO: Reduce this to 3000 (3 population units)
+        this.count = 4000;
         this.numOptionalFarmers = 1; // to generate extra food while testing
     }
 }

@@ -55,7 +55,7 @@ function calculateNumRequiredFarmers(userState) {
     producedFood += userState.construction.isCompleted(Buildings.FARMERS_MARKET) ? 3 : 0;
     producedFood *= 1; // 2 for each Wild game in the city's catchment area
 
-    const totalGeneratedFood = baseFoodLevel + producedFood;
+    const totalGeneratedFood = producedFood;
     const neededFarmedFood = numRequiredFood - totalGeneratedFood;
 
     if (neededFarmedFood <= 0) {
@@ -109,8 +109,8 @@ function calculateFoodPerFarmer(userState) {
     return foodPerFarmer;
 }
 
-function calculateNumRioters() {
-    return 1;
+function calculateNumRioters(userState) {
+    return 0;
 }
 
 /**
@@ -142,7 +142,7 @@ function calculateFoodGenerated(userState) {
     const wildGameModifier = 1; //TODO:  2 for each Wild game in the city's catchment area
     const unweightedFood = (granaryFood + marketFood) * wildGameModifier;
 
-    const totalFoodProduced = baseFoodLevel + weightedFood + unweightedFood;
+    const totalFoodProduced = weightedFood + unweightedFood;
     return totalFoodProduced;
 }
 

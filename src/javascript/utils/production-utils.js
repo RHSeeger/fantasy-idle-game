@@ -170,7 +170,7 @@ function calculateFoodGenerated(userState) {
     const maxWeightedFood = maxFarmedFood + (userState.construction.isCompleted(Buildings.FORESTERS_GUILD) ? 2 : 0);
 
     // The amount of weighted food generated after reducing by half the amount over the base food level
-    const weightedFood = (maxWeightedFood <= baseFoodLevel) ? baseFoodLevel
+    const weightedFood = (maxWeightedFood <= baseFoodLevel) ? maxWeightedFood
         : maxWeightedFood - ((maxWeightedFood - baseFoodLevel) / 2.0);
 
     // Now we move on to the unweighted food generation types
@@ -179,7 +179,7 @@ function calculateFoodGenerated(userState) {
     const wildGameModifier = 1; //TODO:  2 for each Wild game in the city's catchment area
     const unweightedFood = (granaryFood + marketFood) * wildGameModifier;
 
-    const totalFoodProduced = baseFoodLevel + weightedFood + unweightedFood;
+    const totalFoodProduced = weightedFood + unweightedFood;
 
     //console.log("numRequiredFarmers = [" + getNumRequiredFarmers() + "]"
     //    + ", numOptionalFarmers = [" + getNumOptionalFarmers() + "]"
