@@ -27,7 +27,7 @@ function update(gameState) {
 
 function updateCityTitleDisplay(userState) {
     const citySizeLabel = "Capital";
-    const cityName = userState.cityName;
+    const cityName = userState.city.cityName;
 
     const $cityTitleModule = $('.main .city-title');
     $cityTitleModule.text(citySizeLabel + " of " + cityName);

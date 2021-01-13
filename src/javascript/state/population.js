@@ -4,6 +4,7 @@
 
 import Buildings from '../definitions/Buildings.js'
 import Races from '../definitions/Races.js';
+import Terrains from '../definitions/terrain/Terrains.js';
 
 /**
  * Updates the population info for one game turn
@@ -23,7 +24,7 @@ function calculatePopulationGrowthRate(userState) {
     const foodProduced = calculateFoodGenerated(userState);
 
     var baseRate = Math.ceil((foodProduced - populationUnits) / 2.0) * 10;
-    if (userState.hasAdditionalRace(Races.LIZARDMAN)) {
+    if (userState.city.hasAdditionalRace(Races.LIZARDMAN)) {
         baseRate += 10;
     }
 
@@ -99,8 +100,8 @@ function calculateNumRequiredFood(userState) {
  */
 function calculateFoodPerFarmer(userState) {
     const hasAnimistsGuild = userState.construction.isCompleted(Buildings.ANIMISTS_GUILD);
-    const isHalfling = userState.primaryRace === Races.HALFLING;
-    const hasHalflings = userState.additionalRaces.includes(Races.HALFLING);
+    const isHalfling = userState.city.isRace(Races.HALFLING);
+    const hasHalflings = userState.city.hasAdditionalRace(Races.HALFLING);
 
     const foodPerFarmer = (hasAnimistsGuild || isHalfling) ? 3
         : hasHalflings ? 2.5
@@ -150,15 +151,21 @@ function calculateFoodGenerated(userState) {
  * TODO: This
  */
 function calculateBaseFoodLevel(userState) {
+    const countTerrains = function(terrains) {
+        return userState.city.terrains
+            .filter(terrain => terrains.includes(terrain))
+            .length;
+    }
     var baseFoodLevel =
-        (0.5 * 0) // 0.5 for each Forest, Gill, or Short in its catchment area
-        + (1.5 * 0) // 1.5 for each Grassland in its catchment area
-        + (2 * 0) // 2 for each River, River Mouth, or Sorcery Node in its catchment area
-        + (2.5 * 0); // 2.5 for each Nature Node in its catchment area
+        (0.5 * countTerrains([Terrains.FOREST, Terrains.HILLS, Terrains.SHORE])) // 0.5 for each Forest, Hill, or Shore in its catchment area
+        + (1.5 * countTerrains([Terrains.GRASSLAND])) // 1.5 for each Grassland in its catchment area
+        + (2 * countTerrains([Terrains.RIVER, Terrains.RIVER_MOUTH])) // 2 for each River, River Mouth, or Sorcery Node in its catchment area
+        + (2 * 0) // 2 for each Sorcery Node in catchment
+        + (2.5 * 0) // 2 for each Nature Node in catchment
     if (false) {// if the city has Gaia's Blessing case on it
         baseFoodLevel *= 1.5;
     }
-
+    //console.log("Base food level", baseFoodLevel);
     return baseFoodLevel;
 }
 

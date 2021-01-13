@@ -18,9 +18,9 @@ function calculateProductionBase(userState) {
     const numRioters = Population.calculateNumRioters(userState);
     const numWorkers = Population.calculatePopulationUnits(userState) - (numFarmers + numRioters);
 
-    const primaryRaceWorkerGenerated = (userState.isRace(Races.KLACKON) || userState.isRace(Races.DWARF)) ? 3 : 2;
-    const secondaryRacesWorkerGenerated = (userState.hasAdditionalRace(Races.DWARF) ? 0.5 : 0)
-        + (userState.hasAdditionalRace(Races.DWARF) ? 0.5 : 0)
+    const primaryRaceWorkerGenerated = (userState.city.isRace(Races.KLACKON) || userState.city.isRace(Races.DWARF)) ? 3 : 2;
+    const secondaryRacesWorkerGenerated = (userState.city.hasAdditionalRace(Races.DWARF) ? 0.5 : 0)
+        + (userState.city.hasAdditionalRace(Races.DWARF) ? 0.5 : 0)
     const baseProduction = (numFarmers * 0.5)+ (numWorkers * (primaryRaceWorkerGenerated + secondaryRacesWorkerGenerated))
     return baseProduction;
 }
@@ -68,15 +68,15 @@ function calculateGoldProduced(userState) {
 
 function calculateBaseGold(userState) {
     // From taxes
-    const taxRaceMultiplier = userState.isRace(Races.DWARF) ? 2
-        : userState.hasAdditionalRace(Races.DWARF) ? 1.25
+    const taxRaceMultiplier = userState.city.isRace(Races.DWARF) ? 2
+        : userState.city.hasAdditionalRace(Races.DWARF) ? 1.25
         : 1;
     const numTaxablePopulationUnits = Population.calculatePopulationUnits(userState) - Population.calculateNumRioters(userState);
-    const taxGold = numTaxablePopulationUnits * userState.taxRate * taxRaceMultiplier;
+    const taxGold = numTaxablePopulationUnits * userState.city.taxRate * taxRaceMultiplier;
 
     // From minerals
-    const mineralsRaceModifier = userState.isRace(Races.DWARF) ? 2
-        : userState.hasAdditionalRace(Races.DWARF) ? 1.25
+    const mineralsRaceModifier = userState.city.isRace(Races.DWARF) ? 2
+        : userState.city.hasAdditionalRace(Races.DWARF) ? 1.25
         : 1;
     const mineralsBuildingModified = userState.construction.isCompleted(Buildings.MINERS_GUILD) ? 1.5 : 1;
     //const mineralValue = [

@@ -4,6 +4,7 @@
 
 import Races from "../definitions/Races.js";
 import Buildings from "../definitions/Buildings.js";
+import Terrains from "../definitions/terrain/Terrains.js";
 
 class PlayerConstruction {
     constructor() {
@@ -48,27 +49,24 @@ class PlayerResources {
 
 class PlayerPopulation {
     constructor() {
-        this.count = 20000; // TODO: Reduce this to 3
+        this.count = 20000; // TODO: Reduce this to 3000 (3 population units)
         this.numOptionalFarmers = 1; // to generate extra food while testing
     }
 }
 
-class Player {
+class PlayerCity {
     constructor() {
         this.cityName = 'York'
         this.primaryRace = Races.HUMAN;
         this.additionalRaces = [];
+        this.terrains = [ // Default start has 20 blocks (5x5, minus corners and city (center)
+            /* corner */ Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND, /* corner */
+            Terrains.FOREST, Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND,
+            Terrains.FOREST,Terrains.GRASSLAND, /* city */, Terrains.GRASSLAND, Terrains.GRASSLAND,
+            Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND,
+            /* corner */ Terrains.GRASSLAND, Terrains.GRASSLAND, Terrains.GRASSLAND, /* corner */
+        ]
         this.taxRate = 1;
-        this.resources = new PlayerResources()
-        this.construction = new PlayerConstruction();
-        this.population = new PlayerPopulation();
-    }
-
-    // This only works as long as we're storing only things that make sense as JSON
-    // Ok, we're just going to return the same value for now.. because the clone is not keeping methods
-    clone() {
-        return this;
-        //return JSON.parse(JSON.stringify(this));
     }
 
     isRace(race) {
@@ -77,6 +75,22 @@ class Player {
 
     hasAdditionalRace(race) {
         return this.additionalRaces.includes(race);
+    }
+
+}
+class Player {
+    constructor() {
+        this.resources = new PlayerResources()
+        this.construction = new PlayerConstruction();
+        this.population = new PlayerPopulation();
+        this.city = new PlayerCity();
+    }
+
+    // This only works as long as we're storing only things that make sense as JSON
+    // Ok, we're just going to return the same value for now.. because the clone is not keeping methods
+    clone() {
+        return this;
+        //return JSON.parse(JSON.stringify(this));
     }
 };
 

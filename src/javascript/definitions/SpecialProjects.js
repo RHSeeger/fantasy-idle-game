@@ -8,7 +8,7 @@ const HOUSING = new SpecialProject({
 });
 
 const TRADE_GOODS = new SpecialProject({
-    displayName: "Granary",
+    displayName: "Trade Goods",
     description: "Production is redirected to building trade goods which are converted to gold. Continues until changed"
 });
 

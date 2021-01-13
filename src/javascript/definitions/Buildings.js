@@ -11,7 +11,7 @@ const BUILDERS_HALL = new Building({
 });
 
 const SMITHY = new Building({
-    displayName: "Amithy",
+    displayName: "Smithy",
     cost: [{type: Resources.PRODUCTION, amount: 40}],
     upkeep: [{type: Resources.GOLD, amount: 1}],
     description: "",

@@ -14,7 +14,7 @@ function update(userState) {
 
 function updateRaceDisplay(userState) {
     const $primaryRaceModule = $('.population-module .race-module');
-    $primaryRaceModule.text(userState.primaryRace.displayName);
+    $primaryRaceModule.text(userState.city.primaryRace.displayName);
 }
 
 const updatePopulationDisplay = function(userState) {
