@@ -10,6 +10,7 @@ import * as Definitions from "./definitions.js";
 import GameState from "./classes/GameState.js";
 import * as State from "./state.js";
 import * as UI from './ui.js';
+import * as StateUtils from './state/state-utils.js';
 
 const UPDATE_INTERVAL_TURN = 10000; // one turn every 10 seconds
 const UPDATE_INTERVAL_UI = 1000; // update the ui every 1 second
@@ -26,7 +27,7 @@ $(document).ready(function() {
     UI.initialize();
 
     const gameState = new GameState();
-    document.gameState = gameState;
+    StateUtils.setGameState(gameState);
 
     // TODO: load player from storage, if available
 

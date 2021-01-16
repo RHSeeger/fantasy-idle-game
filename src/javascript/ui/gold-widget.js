@@ -3,8 +3,11 @@
  */
 
 import * as ProductionUtils from '../utils/production-utils.js';
+import * as State from '../state/state-utils.js';
 
-function update(userState) {
+function update() {
+    const userState = State.getPlayerState();
+
     const $widget = $('.main .effects-container .resources-module .gold-widget');
     const $widgetGraphic = $widget.find('.graphic-value');
     const $widgetText = $widget.find('.text-value');

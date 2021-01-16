@@ -23,9 +23,26 @@ class PlayerConstruction {
         return this.completed.includes(project);
     }
 
-    enqueue(project) {
+    addToQueue(project) {
         if (!this.queue.includes(project)) {
             this.queue.push(project);
+        }
+    }
+    addToQueueFirst(project) {
+        if (!this.queue.includes(project)) {
+            this.queue.unshift(project);
+        }
+    }
+    addToQueueLast(project) {
+        if (!this.queue.includes(project)) {
+            this.queue.push(project);
+        }
+    }
+
+    removeFromQueue(project) {
+        const index = this.queue.indexOf(project);
+        if (index > -1) {
+            this.queue.splice(index, 1);
         }
     }
 

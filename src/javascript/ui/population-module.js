@@ -5,19 +5,24 @@
 //import { RACES, RACE_DATA } from '../races.js';
 
 import * as Population from '../state/population.js';
+import * as State from '../state/state-utils.js';
 
-function update(userState) {
-    updateRaceDisplay(userState);
-    updatePopulationDisplay(userState);
-    updateWorkersDisplay(userState);
+function update() {
+    updateRaceDisplay();
+    updatePopulationDisplay();
+    updateWorkersDisplay();
 }
 
-function updateRaceDisplay(userState) {
+function updateRaceDisplay() {
+    const userState = State.getPlayerState();
+
     const $primaryRaceModule = $('.population-module .race-module');
     $primaryRaceModule.text(userState.city.primaryRace.displayName);
 }
 
-const updatePopulationDisplay = function(userState) {
+const updatePopulationDisplay = function() {
+    const userState = State.getPlayerState();
+
     const count = Math.floor(userState.population.count).toLocaleString();
     const growthRate = Population.calculatePopulationGrowthRate(userState);
 
@@ -27,7 +32,9 @@ const updatePopulationDisplay = function(userState) {
         + growthRate + ")");
 }
 
-const updateWorkersDisplay = function(userState) {
+const updateWorkersDisplay = function() {
+    const userState = State.getPlayerState();
+
     const numRequiredFarmers = Population.calculateNumRequiredFarmers(userState);
     const numOptionalFarmers = userState.population.numOptionalFarmers;
     const numRioters = Population.calculateNumRioters();

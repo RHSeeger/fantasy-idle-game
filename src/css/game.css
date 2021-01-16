@@ -522,6 +522,10 @@ h1 {
     margin: 1em 0 0 0.5em;
 }
 
+.application .construction .asset .actions .button {
+    cursor: hand;
+}
+
 /* THe little close / remove buttons used to remove things like queue items */
 .x-close {
     display: block;

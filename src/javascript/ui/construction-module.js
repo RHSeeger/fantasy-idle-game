@@ -16,6 +16,7 @@ import Buildings from '../definitions/Buildings.js';
 import SpecialProjects from '../definitions/SpecialProjects.js';
 import Units from '../definitions/Units.js';
 import Resources from '../definitions/Resources.js';
+import * as State from '../state/state-utils.js';
 
 function initialize() {
     initializeOptions();
@@ -30,14 +31,16 @@ function initialize() {
  * - Update the various project "buttons" to show/hide them based on availability
  * - Update the queue to show the projects currently in it
  */
-function update(userState) {
+function update() {
     const $constructionContent = $(".application .tab-contents .tab-content-construction");
 
-    updateProjectButtons(userState, $constructionContent);
-    updateQueueWidget(userState, $constructionContent);
+    updateProjectButtons($constructionContent);
+    updateQueueWidget($constructionContent);
 }
 
-function updateProjectButtons(userState, $constructionContent) {
+function updateProjectButtons($constructionContent) {
+    const userState = State.getPlayerState();
+
     const $projectsList = $constructionContent.find(".construction-option");
 
     // Update visibility of project buttons
@@ -59,7 +62,9 @@ function updateProjectButtons(userState, $constructionContent) {
 
 // TODO: When adding a project item, add an X to remove it
 // TODO: Add the ability to drag items around the queue
-function updateQueueWidget(userState, $constructionContent) {
+function updateQueueWidget($constructionContent) {
+    const userState = State.getPlayerState();
+
     const $queueWidget = $constructionContent.find(".queue");
     const $widgetProjects = $queueWidget.find(".project");
     const queuedProjects = userState.construction.queue;
@@ -71,41 +76,18 @@ function updateQueueWidget(userState, $constructionContent) {
     //    $widgetProjects.map(function(i,p) { return $(p).data('project').displayName; })
     //);
     queuedProjects.forEach(function(project) {
-        //console.log("Looking to add project", project.displayName);
-
         if ($currentWidgetProjectsSublist.length == 0) {
             // If there's nothing left in the current sublist, then just add the project
-            //console.log("Nothing in queue window, adding", project);
             $queueWidget.append(createQueueProjectElement(project));
-
-            //const $projectDiv = $("<div />", {
-            //    text: project.displayName,
-            //    'class': 'project'
-            //}).data("project", project);
-            //$queueWidget.append($projectDiv);
         } else {
             const $nextWidgetProject = $currentWidgetProjectsSublist.eq(0);
-            //console.log("Next project in widget", $nextWidgetProject);
 
             if ($nextWidgetProject.data('project') == project) {
                 // If it's the currently looked at project in the widget, we're done, continue the projects loop
-                //console.log("Next project is current project, no action necessary", project);
             } else {
                 // Otherwise, replace the currently being looked at element with a new project element
-                //console.log("Replacing next project with current", $nextWidgetProject.data("project"));
                 $nextWidgetProject.replaceWith(createQueueProjectElement(project));
 
-
-                //const $projectDiv = $("<div />", {
-                //    text: project.displayName
-                //}).data("project", project);
-                //const $close = $("<span />", {
-                //    'class': 'x-close',
-                //    text: 'X'
-                //});
-                //$projectDiv.append($close);
-                //$queueWidget.append($projectDiv);
-                //$nextWidgetProject.replaceWith($projectDiv);
             }
         }
 
@@ -137,14 +119,8 @@ function createQueueProjectElement(project) {
     $projectDiv.append($label);
 
     $close.click(function() {
-        // TODO: This... there should be a quick, clean way to get the player state to update
-        const userState = document.gameState.player;
-        const queuedProjects = userState.construction.queue;
-        const index = queuedProjects.indexOf(project);
-        if (index > -1) {
-            queuedProjects.splice(index, 1);
-        }
-        update(userState);
+        State.getPlayerState().construction.removeFromQueue(project);
+        update();
     });
 
     return $projectDiv;
@@ -196,18 +172,34 @@ function initializeOptions() {
 }
 
 function initializeActions() {
-    $(".application .tab-contents .tab-content-construction .construction-option").each(function(index, option) {
+    const $main = $(".application .tab-contents .tab-content-construction");
+
+    $main.find(".construction-option").each(function(index, option) {
         const $option = $(option);
         const typeName = $option.attr('data-type');
         //const value = $option.attr('data-value')
-        const value = $option.data("value");
+        const project = $option.data("value");
 
         $option.click(function() {
             $(".application .tab-contents .tab-content-construction .construction-option").removeClass("active");
             $(this).addClass("active");
-            setSelectedProject(typeName, value);
+            setSelectedProject(typeName, project);
         });
-    })
+    });
+
+
+    $main.find('.button-queue-first').click(function() {
+        const project = $(this).data('project');
+        const playerState = State.getPlayerState();
+        playerState.construction.addToQueueFirst(project);
+        update();
+    });
+    $main.find('.button-queue-last').click(function() {
+        const project = $(this).data('project');
+        const playerState = State.getPlayerState();
+        playerState.construction.addToQueueLast(project);
+        update();
+    });
 }
 
 
@@ -217,24 +209,24 @@ function initializeActions() {
  * queue if that button is pressed. This has no effect on the queue / what the user is currently building
  * @type One of the modules Buildings, SpecialProjects, Units
  */
-function setSelectedProject(typeName, value) {
+function setSelectedProject(typeName, project) {
 
     const $main = $(".application .tab-contents .tab-content-construction .asset");
 
     // Name
-    console.log("Display Name", value.displayName);
-    $main.find(".summary .name").text(value.displayName);
+    console.log("Display Name", project.displayName);
+    $main.find(".summary .name").text(project.displayName);
 
     // Cost
     var cost = Resources.getValues()
-        .map(resource => [resource, value.getCost(resource)])
+        .map(resource => [resource, project.getCost(resource)])
         .filter(resourceData => resourceData[1] != null && resourceData[1] > 0)
         .map(resourceData => resourceData[1] + " " + resourceData[0].displayName);
     $main.find(".summary .cost .value").text(cost.length === 0 ? "<special>" : cost.join(" and "));
 
     // Maintenance
     var upkeep = Resources.getValues()
-        .map(resource => [resource, value.getUpkeep(resource)])
+        .map(resource => [resource, project.getUpkeep(resource)])
         .filter(resourceData => resourceData[1] != null && resourceData[1] > 0)
         .map(resourceData => resourceData[1] + " " + resourceData[0].displayName);
     $main.find(".widget-maintenance .value").text(upkeep.length === 0 ? "<special>" : upkeep.join(" and "));
@@ -245,8 +237,13 @@ function setSelectedProject(typeName, value) {
     //$main.find(".widget-allows .value").text(allows.join(" and "));
 
     // Description
-    const description = typeof value.description !== 'undefined' ? value.description : nul;
+    const description = typeof project.description !== 'undefined' ? project.description : nul;
     $main.find(".description").text(description === null ? "" : description);
+
+
+    // Set the actions for the QueueFirst and QueueList buttons
+    $main.find('.button-queue-first').data('project', project);
+    $main.find('.button-queue-last').data('project', project);
 }
 
 /** EXPORTS **/
