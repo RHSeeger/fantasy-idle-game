@@ -22,15 +22,25 @@ function initialize() {
     initializeActions();
 }
 
+// TODO: I feel like the various widgets should be grabbing the game state from the environment, not needing it
+//       passed in. So that various buttons that cause data changes cause the change to the most recent state
+
 /**
  * Update the module
  * - Update the various project "buttons" to show/hide them based on availability
  * - Update the queue to show the projects currently in it
  */
 function update(userState) {
-    const $constructionContent = $(".application .tab-contents .tab-content-construction")
+    const $constructionContent = $(".application .tab-contents .tab-content-construction");
+
+    updateProjectButtons(userState, $constructionContent);
+    updateQueueWidget(userState, $constructionContent);
+}
+
+function updateProjectButtons(userState, $constructionContent) {
     const $projectsList = $constructionContent.find(".construction-option");
 
+    // Update visibility of project buttons
     $projectsList.each((index, option) => {
         const $option = $(option);
         const value = $option.data("value");
@@ -45,6 +55,99 @@ function update(userState) {
             $option.css("display", "block");
         }
     });
+}
+
+// TODO: When adding a project item, add an X to remove it
+// TODO: Add the ability to drag items around the queue
+function updateQueueWidget(userState, $constructionContent) {
+    const $queueWidget = $constructionContent.find(".queue");
+    const $widgetProjects = $queueWidget.find(".project");
+    const queuedProjects = userState.construction.queue;
+
+    var $currentWidgetProjectsSublist = $widgetProjects;
+
+    // Iterate over each project in the queue
+    //console.log("Current widget projects",
+    //    $widgetProjects.map(function(i,p) { return $(p).data('project').displayName; })
+    //);
+    queuedProjects.forEach(function(project) {
+        //console.log("Looking to add project", project.displayName);
+
+        if ($currentWidgetProjectsSublist.length == 0) {
+            // If there's nothing left in the current sublist, then just add the project
+            //console.log("Nothing in queue window, adding", project);
+            $queueWidget.append(createQueueProjectElement(project));
+
+            //const $projectDiv = $("<div />", {
+            //    text: project.displayName,
+            //    'class': 'project'
+            //}).data("project", project);
+            //$queueWidget.append($projectDiv);
+        } else {
+            const $nextWidgetProject = $currentWidgetProjectsSublist.eq(0);
+            //console.log("Next project in widget", $nextWidgetProject);
+
+            if ($nextWidgetProject.data('project') == project) {
+                // If it's the currently looked at project in the widget, we're done, continue the projects loop
+                //console.log("Next project is current project, no action necessary", project);
+            } else {
+                // Otherwise, replace the currently being looked at element with a new project element
+                //console.log("Replacing next project with current", $nextWidgetProject.data("project"));
+                $nextWidgetProject.replaceWith(createQueueProjectElement(project));
+
+
+                //const $projectDiv = $("<div />", {
+                //    text: project.displayName
+                //}).data("project", project);
+                //const $close = $("<span />", {
+                //    'class': 'x-close',
+                //    text: 'X'
+                //});
+                //$projectDiv.append($close);
+                //$queueWidget.append($projectDiv);
+                //$nextWidgetProject.replaceWith($projectDiv);
+            }
+        }
+
+        if ($currentWidgetProjectsSublist.length > 0) {
+            $currentWidgetProjectsSublist = $currentWidgetProjectsSublist.slice(1);
+        }
+    });
+
+    while ($currentWidgetProjectsSublist.length > 0) {
+        const $nextWidgetProject = $currentWidgetProjectsSublist.eq(0);
+        $nextWidgetProject.remove();
+        $currentWidgetProjectsSublist = $currentWidgetProjectsSublist.slice(1);
+    }
+}
+
+function createQueueProjectElement(project) {
+    const $projectDiv = $("<div />", {
+        'class': 'project'
+    }).data("project", project);
+    const $close = $("<span />", {
+        'class': 'x-close',
+        text: 'x'
+    });
+    $projectDiv.append($close);
+    const $label = $("<span />", {
+        'class': 'label',
+        text: project.displayName
+    });
+    $projectDiv.append($label);
+
+    $close.click(function() {
+        // TODO: This... there should be a quick, clean way to get the player state to update
+        const userState = document.gameState.player;
+        const queuedProjects = userState.construction.queue;
+        const index = queuedProjects.indexOf(project);
+        if (index > -1) {
+            queuedProjects.splice(index, 1);
+        }
+        update(userState);
+    });
+
+    return $projectDiv;
 }
 
 /**

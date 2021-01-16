@@ -342,6 +342,10 @@ h1 {
 }
 
 .application .construction .queue {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+
     /* flex child properties */
     flex-grow: 0;
 
@@ -498,4 +502,30 @@ h1 {
 
 .application .construction .container-top .buildings .construction-option.active {
     font-weight: bold;
+}
+
+/* Construction Queue Items */
+
+.application .construction .queue .project {
+    /* flex child properties */
+    flex-grow: 0;
+
+    background-color: tan;
+    border: var(--raised-border);
+    border-color: var(--raised-border-colors);
+    width: 5em;
+    height: 5em;
+}
+
+.application .construction .queue .project .label {
+    display: block;
+    margin: 1em 0 0 0.5em;
+}
+
+/* THe little close / remove buttons used to remove things like queue items */
+.x-close {
+    display: block;
+    float: right;
+    padding: 0 5px 5px 5px;
+    cursor: hand;
 }

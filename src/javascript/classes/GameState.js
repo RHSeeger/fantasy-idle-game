@@ -5,11 +5,12 @@
 import Races from "../definitions/Races.js";
 import Buildings from "../definitions/Buildings.js";
 import Terrains from "../definitions/terrain/Terrains.js";
+import SpecialProjects from "../definitions/SpecialProjects.js";
 
 class PlayerConstruction {
     constructor() {
         this.completed = [ Buildings.GRANARY, Buildings.BUILDERS_HALL ]; // starting with a granary just to produce some food until we get land added
-        this.queue = [];
+        this.queue = [ SpecialProjects.HOUSING, Buildings.BARRACKS ];
     }
 
     complete(project) {
