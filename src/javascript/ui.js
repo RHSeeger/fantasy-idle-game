@@ -10,6 +10,7 @@ import * as PopulationModule from './ui/population-module.js';
 import * as ResourcesModule from './ui/resources-module.js';
 import * as ConstructionModule from './ui/construction-module.js';
 import * as State from './state/state-utils.js';
+import * as MainBuildingsModule from './ui/main-buildings-module.js';
 
 function initialize() {
     Tabs.initialize();
@@ -23,6 +24,7 @@ function update() {
     PopulationModule.update();
     ResourcesModule.update();
     ConstructionModule.update();
+    MainBuildingsModule.update();
 }
 
 function updateCityTitleDisplay() {

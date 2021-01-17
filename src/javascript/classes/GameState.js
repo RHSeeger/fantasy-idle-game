@@ -9,8 +9,13 @@ import SpecialProjects from "../definitions/SpecialProjects.js";
 
 class PlayerConstruction {
     constructor() {
-        this.completed = [ Buildings.GRANARY, Buildings.BUILDERS_HALL ]; // starting with a granary just to produce some food until we get land added
+        this.completed = [ Buildings.GRANARY, Buildings.BUILDERS_HALL
+            , Buildings.MARKETPLACE, Buildings.ANIMISTS_GUILD, Buildings.BARRACKS,
+            Buildings.FORESTERS_GUILD, Buildings.FARMERS_MARKET, Buildings.LIBRARY
+
+        ]; // starting with a granary just to produce some food until we get land added
         this.queue = [ SpecialProjects.HOUSING, Buildings.BARRACKS ];
+        this.progress = 0;
     }
 
     complete(project) {
@@ -52,7 +57,8 @@ class PlayerConstruction {
 
     getCurrentProject() {
         if (this.queue.length === 0) {
-            return null;
+            // Have this return TRADE_GOODS if we're at max population, if we even have max population
+            return SpecialProjects.HOUSING;
         }
         return this.queue[0];
     }

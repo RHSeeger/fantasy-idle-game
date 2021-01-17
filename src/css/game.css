@@ -54,17 +54,16 @@ h1 {
     /* flex parent properties */
     display: flex;
     flex-direction: column;
-    /* flex child properties */
-    flex-grow: 60;
+
+    width: 65%;
 }
 
 .main .container-right {
     /* flex parent properties */
     display: flex;
     flex-direction: column;
-    /* flex child properties */
-    flex-grow: 40;
 
+    width: 35%;
     margin-left: 5px;
 }
 
@@ -532,4 +531,30 @@ h1 {
     float: right;
     padding: 0 5px 5px 5px;
     cursor: hand;
+}
+
+/* Main / Buildings */
+.main .buildings-module {
+
+}
+
+.main .buildings-module .content {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: row;
+    flex-flow: wrap;
+
+    /* flex child properties */
+    /*flex-grow: 1; */
+}
+.main .buildings-module .content .project {
+    /* flex child properties */
+    flex-grow: 0;
+
+    margin: 2px;
+    padding: 5px;
+    background: tan;
+    //border: solid black 1px;
+    border-radius: 5px
+
 }
