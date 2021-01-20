@@ -232,9 +232,44 @@ function setSelectedProject(typeName, project) {
     $main.find(".widget-maintenance .value").text(upkeep.length === 0 ? "<special>" : upkeep.join(" and "));
 
     // Allows
-    // this is actually more complicated than this, because one type of project could allow another
-    //const allows = dataSource.getAllows(value);
-    //$main.find(".widget-allows .value").text(allows.join(" and "));
+    const $wigetAllowsValue = $main.find('.widget-allows .value');
+    $wigetAllowsValue.empty();
+
+    const allowedElems = [];
+    const userState = State.getPlayerState();
+    Buildings.getValues().forEach(proj => {
+        if (userState.construction.isCompleted(proj)) {
+            // if we already have a building, then obviously building this one won't allow us to build that one
+            return;
+        }
+
+        // TODO: Which ones are allowed vs allowedWithAdditions may change as projects are completed
+        if (allowsProject(proj, project, userState)) {
+            allowedElems.push($("<li />", {
+                'class': 'allowed-project',
+                text: proj.displayName
+            }).data(proj));
+            return;
+        }
+
+        if (proj.dependencies.includes(project)) {
+            // At this point, if the project is a dependency of proj
+            // Then we know that there are some other dependencies that the user does not have
+            // (otherwise the previous block would have handled it
+            allowedElems.push($("<li />", {
+                'class': 'allowed-project incomplete',
+                text: proj.displayName,
+                'data-tooltip': 'This item requires other buildings to be able to complete'
+            }).data(proj));
+            return;
+        }
+    });
+
+    if (allowedElems.length === 0) {
+        $wigetAllowsValue.text("None");
+    } else {
+        allowedElems.forEach(elem => $wigetAllowsValue.append(elem));
+    }
 
     // Description
     const description = typeof project.description !== 'undefined' ? project.description : nul;
@@ -245,6 +280,19 @@ function setSelectedProject(typeName, project) {
     $main.find('.button-queue-first').data('project', project);
     $main.find('.button-queue-last').data('project', project);
 }
+
+function allowsProject(project, isAllowedByProject, userState) {
+    if (!project.dependencies.includes(isAllowedByProject)) {
+        return false;
+    }
+
+    // If there's any projects (that are not the one we're checking as a dependency)
+    // that the user doesn't have... then return false
+    return ! project.dependencies
+        .filter(depProj => depProj !== isAllowedByProject)
+        .some(depProj => ! userState.construction.isCompleted(depProj));
+}
+
 
 /** EXPORTS **/
 

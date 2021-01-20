@@ -558,3 +558,7 @@ h1 {
     border-radius: 5px
 
 }
+
+.application .tab-contents .tab-content-construction .asset .allowed-project.incomplete {
+    font-style: italic;
+}
