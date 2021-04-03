@@ -506,6 +506,10 @@ h1 {
 /* Construction Queue Items */
 
 .application .construction .queue .project {
+    /* flex parent properties */
+    display: flex;
+    flex-direction: column;
+
     /* flex child properties */
     flex-grow: 0;
 
@@ -514,11 +518,28 @@ h1 {
     border-color: var(--raised-border-colors);
     width: 5em;
     height: 5em;
+    padding: 0 5px 5px 5px;
 }
 
 .application .construction .queue .project .label {
+    /* flex child properties */
+    flex-grow: 1;
+
     display: block;
     margin: 1em 0 0 0.5em;
+}
+.application .construction .queue .project .progress-bar {
+    /* flex child properties */
+    flex-grow: 0;
+
+    width: 100%;
+    height: 10px;
+    border: solid black 0.5px;
+    border-radius: 5px;
+}
+.application .construction .queue .project .progress-bar .filled {
+    background: green;
+    height: 100%;
 }
 
 .application .construction .asset .actions .button {
@@ -561,4 +582,12 @@ h1 {
 
 .application .tab-contents .tab-content-construction .asset .allowed-project.incomplete {
     font-style: italic;
+}
+
+/* All construction queue progress bars should be hidden, except for the first */
+.application .construction .queue .project .progress-bar {
+    display: block;
+}
+.application .construction .queue .project ~ .project .progress-bar {
+    display: none;
 }

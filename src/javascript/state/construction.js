@@ -10,6 +10,7 @@
 import * as ProductionUtils from '../utils/production-utils.js';
 import Projects from '../definitions/Projects.js';
 import Resources from '../definitions/Resources.js';
+import * as Message from '../ui/message-window.js';
 
 /**
  * Updates the population info for one game turn
@@ -44,7 +45,7 @@ function update(oldUserState, newUserState) {
     }
 
     // Project is completed, update things
-    console.log("Completed construction of project: " + project.displayName);
+    Message.building("Completed construction of project: " + project.displayName);
     newUserState.construction.removeFromQueue(project);
     newUserState.construction.complete(project);
     newUserState.construction.progress = 0;

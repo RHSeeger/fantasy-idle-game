@@ -69,12 +69,10 @@ function updateQueueWidget($constructionContent) {
     const $widgetProjects = $queueWidget.find(".project");
     const queuedProjects = userState.construction.queue;
 
+    // The list of projects in the queue widget
     var $currentWidgetProjectsSublist = $widgetProjects;
 
-    // Iterate over each project in the queue
-    //console.log("Current widget projects",
-    //    $widgetProjects.map(function(i,p) { return $(p).data('project').displayName; })
-    //);
+    // Update the queue display to include the correct projects
     queuedProjects.forEach(function(project) {
         if ($currentWidgetProjectsSublist.length == 0) {
             // If there's nothing left in the current sublist, then just add the project
@@ -87,7 +85,6 @@ function updateQueueWidget($constructionContent) {
             } else {
                 // Otherwise, replace the currently being looked at element with a new project element
                 $nextWidgetProject.replaceWith(createQueueProjectElement(project));
-
             }
         }
 
@@ -96,10 +93,23 @@ function updateQueueWidget($constructionContent) {
         }
     });
 
+    // Remove any projects left in the queue windows, since they don't exist in the queue data
     while ($currentWidgetProjectsSublist.length > 0) {
         const $nextWidgetProject = $currentWidgetProjectsSublist.eq(0);
         $nextWidgetProject.remove();
         $currentWidgetProjectsSublist = $currentWidgetProjectsSublist.slice(1);
+    }
+
+    // Update the progress bar of the first project
+    const $currentProjectWidget = $queueWidget.find(".project").first();
+    //console.log("Current project div", $currentProjectWidget);
+    const project = $currentProjectWidget.data('project');
+    //console.log("Current project", project);
+    if (project !== SpecialProjects.HOUSING && project !== SpecialProjects.TRADE_GOODS) {
+        const totalCost = project.getCost(Resources.PRODUCTION);
+        const progress = 100 * userState.construction.progress / totalCost;
+        //console.log("Setting progress bar to %", progress);
+        $currentProjectWidget.find('.progress-bar .filled').css('width', progress + "%");
     }
 }
 
@@ -112,11 +122,22 @@ function createQueueProjectElement(project) {
         text: 'x'
     });
     $projectDiv.append($close);
+
     const $label = $("<span />", {
         'class': 'label',
         text: project.displayName
     });
     $projectDiv.append($label);
+
+    const $progressBar = $("<div />", {
+        'class': 'progress-bar'
+    })
+    const $progressBarProgress = $("<div />", {
+        'class': 'filled',
+        width: 0
+    })
+    $progressBar.append($progressBarProgress);
+    $projectDiv.append($progressBar);
 
     $close.click(function() {
         State.getPlayerState().construction.removeFromQueue(project);
